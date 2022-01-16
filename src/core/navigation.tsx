@@ -2,8 +2,9 @@ import React, { FC, ReactNode } from 'react'
 import { Link, Outlet, Route, useLocation } from 'react-router-dom'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { Menu, PageHeader } from 'antd'
-import { Login, RequireAuth, useAuth, UserRole, userRoleLevels } from './auth'
+import { Login, RequireAuth, useAuth, UserRole } from './auth'
 import { TranslationKeys, useLang } from './localization'
+import { checkAccess } from './auth/require-role'
 
 export type NavigationItem = {
   title: TranslationKeys
@@ -17,15 +18,7 @@ export type NavigationItem = {
 export let navigationRoutes = (navigationItems: NavigationItem[]) => {
   let { user } = useAuth()
   let accessibleNavigationItems = navigationItems.filter(item => {
-    if (!user) {
-      return false
-    }
-    if (!item.role) {
-      return true
-    }
-    return (
-      userRoleLevels.indexOf(item.role) <= userRoleLevels.indexOf(user.role)
-    )
+    return checkAccess(user, item.role)
   })
 
   return (
@@ -91,7 +84,11 @@ let Layout: FC<LayoutProps> = ({ navigationItems = [] }) => {
   )
 }
 
-let Container: FC<{ title: TranslationKeys }> = ({ title, children }) => {
+type ContainerProps = {
+  title: TranslationKeys
+}
+
+let Container: FC<ContainerProps> = ({ title, children }) => {
   let { t } = useLang()
   return (
     <div style={{ width: '100%', padding: 16, position: 'relative' }}>
