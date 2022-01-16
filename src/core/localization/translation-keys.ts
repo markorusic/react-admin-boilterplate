@@ -6,6 +6,8 @@ export type TranslationKeys =
 	| "common.username"
 	| "common.password"
 	| "common.email"
+	| "common.name"
+	| "common.role"
 	| "common.clear"
 	| "common.search"
 	| "common.create"
@@ -18,4 +20,5 @@ export type TranslationKeys =
 	| "page.home"
 	| "page.users"
 	| "login.title"
-	| "settings.lang";
+	| "settings.lang"
+	| "settings.myInfo";

@@ -6,6 +6,8 @@
   "common.username": "Korisnicko ime",
   "common.password": "Lozinka",
   "common.email": "Email",
+  "common.name": "Ime",
+  "common.role": "Rola",
   "common.clear": "Ocisti",
   "common.search": "Pretraga",
   "common.create": "Kreiraj",
@@ -22,5 +24,6 @@
 
   "login.title": "Komandna tabla | Prijava",
 
-  "settings.lang": "Jezik"
+  "settings.lang": "Jezik",
+  "settings.myInfo": "Moji podaci"
 }

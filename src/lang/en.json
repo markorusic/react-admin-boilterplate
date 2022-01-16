@@ -6,6 +6,8 @@
   "common.username": "Username",
   "common.password": "Password",
   "common.email": "Email",
+  "common.name": "Name",
+  "common.role": "Role",
   "common.clear": "Clear",
   "common.search": "Search",
   "common.create": "Create",
@@ -22,5 +24,6 @@
 
   "login.title": "Dashboard | Login",
 
-  "settings.lang": "Language"
+  "settings.lang": "Language",
+  "settings.myInfo": "My Info"
 }
