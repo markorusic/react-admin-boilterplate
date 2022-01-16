@@ -5,6 +5,11 @@
   "common.username": "Username",
   "common.password": "Password",
   "common.email": "Email",
+  "common.clear": "Clear",
+  "common.search": "Search",
+  "common.create": "Create",
+  "common.successfullyExecuted": "successfullyExecuted",
+  "common.confirmModalClose": "Are you sure that you want to close modal?",
 
   "auth.login": "Login",
   "auth.logout": "Logout",
