@@ -5,6 +5,7 @@ import { Menu, PageHeader } from 'antd'
 import { Login, RequireAuth, useAuth, UserRole } from './auth'
 import { TranslationKeys, useLang } from './localization'
 import { checkAccess } from './auth/require-role'
+import { HeadTitle } from './utils/head-title'
 
 export type NavigationItem = {
   title: TranslationKeys
@@ -92,6 +93,7 @@ let Container: FC<ContainerProps> = ({ title, children }) => {
   let { t } = useLang()
   return (
     <div style={{ width: '100%', padding: 16, position: 'relative' }}>
+      <HeadTitle title={title} />
       <PageHeader
         style={{ padding: 0 }}
         title={t(title)}
