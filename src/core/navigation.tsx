@@ -1,62 +1,63 @@
 import React, { FC, ReactNode } from 'react'
-import { Link, Route, useLocation } from 'react-router-dom'
+import { Link, Outlet, Route, useLocation } from 'react-router-dom'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { Menu, PageHeader } from 'antd'
-import { RequireAuth, useAuth } from './auth'
-import { useLang } from './localization'
+import { Login, RequireAuth, useAuth, UserRole, userRoleLevels } from './auth'
+import { TranslationKeys, useLang } from './localization'
 
 export type NavigationItem = {
-  title: string
+  title: TranslationKeys
   path: string
   element: ReactNode
   icon?: ReactNode
   hidden?: boolean
+  role?: UserRole
 }
 
 export let navigationRoutes = (navigationItems: NavigationItem[]) => {
+  let { user } = useAuth()
+  let accessibleNavigationItems = navigationItems.filter(item => {
+    if (!user) {
+      return false
+    }
+    if (!item.role) {
+      return true
+    }
+    return (
+      userRoleLevels.indexOf(item.role) <= userRoleLevels.indexOf(user.role)
+    )
+  })
+
   return (
     <>
-      {navigationItems.map(item => {
-        return (
-          <Route
-            key={item.path}
-            path={item.path}
-            element={
-              <RequireAuth>
-                <PageLayout
-                  title={item.title}
-                  navigationItems={navigationItems}
-                >
-                  {item.element}
-                </PageLayout>
-              </RequireAuth>
-            }
-          />
-        )
-      })}
+      <Route path="/login" element={<Login />} />
       <Route
-        path="*"
         element={
-          <PageLayout
-            title={useLang().t('page.notfound')}
-            navigationItems={navigationItems}
-          />
+          <RequireAuth>
+            <Layout navigationItems={accessibleNavigationItems} />
+          </RequireAuth>
         }
-      />
+      >
+        {accessibleNavigationItems.map(item => {
+          return (
+            <Route
+              key={item.path}
+              path={item.path}
+              element={<Container title={item.title}>{item.element}</Container>}
+            />
+          )
+        })}
+        <Route path="*" element={<Container title="page.notfound" />} />
+      </Route>
     </>
   )
 }
 
-export type PageLayoutProps = {
-  title: string
+type LayoutProps = {
   navigationItems?: NavigationItem[]
 }
 
-export let PageLayout: FC<PageLayoutProps> = ({
-  title,
-  navigationItems = [],
-  children
-}) => {
+let Layout: FC<LayoutProps> = ({ navigationItems = [] }) => {
   let location = useLocation()
   let { t } = useLang()
   let { user, logout } = useAuth()
@@ -80,19 +81,26 @@ export let PageLayout: FC<PageLayoutProps> = ({
         <Menu selectedKeys={[location.pathname]} style={{ minWidth: 200 }}>
           {visibleNavigationItems.map(item => (
             <Menu.Item key={item.path} icon={item.icon}>
-              <Link to={item.path}>{item.title}</Link>
+              <Link to={item.path}>{t(item.title)}</Link>
             </Menu.Item>
           ))}
         </Menu>
-        <div style={{ width: '100%', padding: 16, position: 'relative' }}>
-          <PageHeader
-            style={{ padding: 0 }}
-            title={title}
-            onBack={() => window.history.back()}
-          />
-          <div style={{ paddingTop: 8 }}>{children}</div>
-        </div>
+        <Outlet />
       </div>
     </main>
+  )
+}
+
+let Container: FC<{ title: TranslationKeys }> = ({ title, children }) => {
+  let { t } = useLang()
+  return (
+    <div style={{ width: '100%', padding: 16, position: 'relative' }}>
+      <PageHeader
+        style={{ padding: 0 }}
+        title={t(title)}
+        onBack={() => window.history.back()}
+      />
+      <div style={{ paddingTop: 8 }}>{children}</div>
+    </div>
   )
 }
