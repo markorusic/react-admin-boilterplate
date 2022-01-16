@@ -43,14 +43,3 @@ export let AuthProvider: FC = ({ children }) => {
 }
 
 export let useAuth = () => useContext(AuthContext) as AuthContextValue
-
-export let RequireAuth: FC = ({ children }) => {
-  let auth = useAuth()
-  let location = useLocation()
-
-  if (!auth.user) {
-    return <Navigate to="/login" state={{ from: location }} replace />
-  }
-
-  return <>{children}</>
-}
