@@ -27,6 +27,7 @@ export let Login = () => {
     <div style={{ margin: '0 auto', width: 425, padding: 32 }}>
       <h1 style={{ textAlign: 'center' }}>{t('login.title')}</h1>
       <Form
+        successMessage={null}
         validationSchema={validationSchemaAdapter(Credentials)}
         initialValues={{ username: '', password: '' }}
         onSubmit={login}

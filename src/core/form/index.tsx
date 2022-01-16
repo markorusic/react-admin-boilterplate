@@ -38,6 +38,7 @@ import { TranslationKeys, useLang } from '../localization'
 let DATE_FORMAT = 'D.M.YYYY HH:mm'
 
 export type FormProps<T> = FormikConfig<T> & {
+  successMessage?: TranslationKeys | null
   closeModalOnSubmit?: boolean
 }
 
@@ -68,6 +69,7 @@ export let withForm = <Props, FormValues>(
 
 export function Form<T>({
   children,
+  successMessage = 'common.successfullyExecuted',
   enableReinitialize = true,
   closeModalOnSubmit = true,
   ...props
@@ -83,9 +85,11 @@ export function Form<T>({
           .onSubmit(values, helpers)
           // @ts-ignore
           ?.then(() => {
-            notification.success({
-              message: t('common.successfullyExecuted')
-            })
+            if (successMessage) {
+              notification.success({
+                message: t(successMessage)
+              })
+            }
             if (closeModalOnSubmit) {
               modal?.close()
             }

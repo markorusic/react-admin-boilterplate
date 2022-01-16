@@ -27,7 +27,7 @@ export let AuthProvider: FC = ({ children }) => {
     logout: () => setUser(undefined),
     login: async credentials => {
       // let { data } = await axios.post<User>('/api/login', credentials)
-      await new Promise(r => setTimeout(r, 3000))
+      await new Promise(r => setTimeout(r, 1500))
       let data: User = { id: 1, name: 'Jon Doe', role: 'super-admin' }
       setUser(data)
     }
