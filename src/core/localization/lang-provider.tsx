@@ -28,6 +28,8 @@ export let LangProvider: FC = ({ children }) => {
   )
 }
 
+export let t = (key: TranslationKeys) => key
+
 export let useLang = () => {
   let lang = useContext(LangContext)
   return {

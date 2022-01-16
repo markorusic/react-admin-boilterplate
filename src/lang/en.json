@@ -1,4 +1,5 @@
 {
+  "error.requiredField": "Required field",
   "error.unknown": "An error occured!",
 
   "common.submit": "Submit",
@@ -8,7 +9,7 @@
   "common.clear": "Clear",
   "common.search": "Search",
   "common.create": "Create",
-  "common.successfullyExecuted": "successfullyExecuted",
+  "common.successfullyExecuted": "Successfully executed!",
   "common.confirmModalClose": "Are you sure that you want to close modal?",
 
   "auth.login": "Login",

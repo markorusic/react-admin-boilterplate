@@ -1,10 +1,16 @@
 {
+  "error.requiredField": "Obavezno polje",
   "error.unknown": "Doslo je do greske!",
 
   "common.submit": "Posalji",
   "common.username": "Korisnicko ime",
   "common.password": "Lozinka",
   "common.email": "Email",
+  "common.clear": "Ocisti",
+  "common.search": "Pretraga",
+  "common.create": "Kreiraj",
+  "common.successfullyExecuted": "Uspesno izvrseno!",
+  "common.confirmModalClose": "Da li ste sigurni da zelite da zatvorite ovaj prozor?",
 
   "auth.login": "Prijavi se",
   "auth.logout": "Odjavi se",

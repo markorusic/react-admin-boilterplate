@@ -33,7 +33,7 @@ import { useModal } from '../utils/modal'
 import { SaveOutlined } from '@ant-design/icons'
 import { Table, TableProps } from '../table'
 import { ID, Identifiable } from '../types'
-import { useLang } from '../localization'
+import { TranslationKeys, useLang } from '../localization'
 
 let DATE_FORMAT = 'D.M.YYYY HH:mm'
 
@@ -130,31 +130,41 @@ let FormUI: FC = ({ children }) => {
 
 export interface BaseInputProps {
   name: string
-  label?: string
+  label?: TranslationKeys
+  unsafe_label?: string
   errorPosition?: 'top' | 'bottom'
 }
 
 export let FormInputContainer: FC<BaseInputProps> = ({
   name,
-  label = '',
+  label,
+  unsafe_label = '',
   errorPosition = 'bottom',
   children
 }) => {
+  let { t } = useLang()
   let [, meta] = useField(name)
   let id = `${name}`
+
+  let displayLabel = label ? t(label) : unsafe_label
+
+  // TODO: this is hacky solution, consider something more better
+  let errorValue = meta.error?.replace(name, displayLabel)
 
   let errorElement =
     meta.touched && meta.error ? (
       <div>
-        {/* TODO: this is hacky solution, consider something more better */}
-        <span style={{ color: 'red' }}>{meta.error.replace(name, label)}</span>
+        <span style={{ color: 'red' }}>
+          {t(errorValue as TranslationKeys) ?? errorValue}
+        </span>
       </div>
     ) : null
+
   return (
     <div style={{ marginBottom: 8 }}>
       <div>
         <label style={{ fontWeight: 500, cursor: 'pointer' }} htmlFor={id}>
-          {label}
+          {displayLabel}
         </label>
       </div>
       {errorPosition === 'top' && errorElement}

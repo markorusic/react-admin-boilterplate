@@ -1,11 +1,11 @@
 import { z } from 'zod'
 
-export const stringToInt = z.preprocess(
+export let stringToInt = z.preprocess(
   value => Math.round(Number(value)),
   z.number()
 )
 
-export const strintToBoolean = z.preprocess(
+export let strintToBoolean = z.preprocess(
   value => value === 'true',
   z.boolean()
 )
