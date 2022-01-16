@@ -7,7 +7,6 @@ import { Settings } from './features/settings'
 
 export let App = () => {
   let { t } = useLang()
-
   return (
     <Routes>
       {navigationRoutes([
@@ -15,13 +14,13 @@ export let App = () => {
           title: t('page.home'),
           path: '/',
           icon: <HomeOutlined />,
-          element: <div>home</div>
+          element: <div>{t('page.home')}</div>
         },
         {
           title: t('page.users'),
           path: '/users',
           icon: <UserOutlined />,
-          element: <div>users</div>
+          element: <div>{t('page.users')}</div>
         },
         {
           title: t('page.settings'),
