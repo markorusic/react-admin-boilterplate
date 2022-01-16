@@ -1,0 +1,10 @@
+{
+  "auth.logout": "Izloguj se",
+
+  "page.notfound": "Nije pronadjeno",
+  "page.settings": "Podešavanja",
+  "page.home": "Početna",
+  "page.users": "Korisnici",
+
+  "settings.lang": "Jezik"
+}

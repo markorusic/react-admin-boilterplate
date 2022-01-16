@@ -3,7 +3,7 @@ import { Link, Route, useLocation } from 'react-router-dom'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { Menu, PageHeader } from 'antd'
 import { useUser } from './auth/hooks'
-import { lang } from '../lang'
+import { useLang } from './localization'
 
 export type NavigationItem = {
   title: string
@@ -33,7 +33,7 @@ export let navigationRoutes = (navigationItems: NavigationItem[]) => {
         path="*"
         element={
           <PageLayout
-            title={lang('page.notfound')}
+            title={useLang().t('page.notfound')}
             navigationItems={navigationItems}
           />
         }
@@ -53,6 +53,7 @@ export let PageLayout: FC<PageLayoutProps> = ({
   children
 }) => {
   let location = useLocation()
+  let { t } = useLang()
   let { user, logout } = useUser()
 
   let visibleNavigationItems = navigationItems.filter(item => !item.hidden)
@@ -65,7 +66,7 @@ export let PageLayout: FC<PageLayoutProps> = ({
       >
         <Menu.SubMenu key="user" icon={<UserOutlined />} title={user?.name}>
           <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={logout}>
-            {lang('auth.logout')}
+            {t('auth.logout')}
           </Menu.Item>
         </Menu.SubMenu>
       </Menu>

@@ -1,34 +1,35 @@
 import React from 'react'
-import { BrowserRouter, Routes } from 'react-router-dom'
-import { HomeOutlined, UserOutlined } from '@ant-design/icons'
+import { Routes } from 'react-router-dom'
+import { HomeOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons'
 import { navigationRoutes } from './core/navigation'
-import { lang } from './lang'
+import { useLang } from './core/localization'
+import { Settings } from './features/settings'
 
 export let App = () => {
+  let { t } = useLang()
+
   return (
-    <BrowserRouter>
-      <Routes>
-        {navigationRoutes([
-          {
-            title: lang('pages.home'),
-            path: '/',
-            icon: <HomeOutlined />,
-            element: <div>home</div>
-          },
-          {
-            title: lang('pages.users'),
-            path: '/users',
-            icon: <UserOutlined />,
-            element: <div>users</div>
-          },
-          {
-            title: lang('pages.stagod'),
-            path: '/stagod',
-            icon: <UserOutlined />,
-            element: <div>stagod</div>
-          }
-        ])}
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      {navigationRoutes([
+        {
+          title: t('page.home'),
+          path: '/',
+          icon: <HomeOutlined />,
+          element: <div>home</div>
+        },
+        {
+          title: t('page.users'),
+          path: '/users',
+          icon: <UserOutlined />,
+          element: <div>users</div>
+        },
+        {
+          title: t('page.settings'),
+          path: '/settings',
+          icon: <SettingOutlined />,
+          element: <Settings />
+        }
+      ])}
+    </Routes>
   )
 }

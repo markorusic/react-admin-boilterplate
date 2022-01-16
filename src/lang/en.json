@@ -1,0 +1,10 @@
+{
+  "auth.logout": "Logout",
+
+  "page.notfound": "Not Found",
+  "page.settings": "Settings",
+  "page.home": "Home",
+  "page.users": "Users",
+
+  "settings.lang": "Language"
+}
