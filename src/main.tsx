@@ -10,16 +10,14 @@ import 'antd/dist/antd.min.css'
 import './index.css'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <QueryProvider>
-        <LangProvider>
-          <AuthProvider>
-            <App />
-          </AuthProvider>
-        </LangProvider>
-      </QueryProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <QueryProvider>
+      <LangProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </LangProvider>
+    </QueryProvider>
+  </BrowserRouter>,
   document.getElementById('root')
 )

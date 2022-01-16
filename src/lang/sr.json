@@ -3,11 +3,13 @@
   "error.unknown": "Doslo je do greske!",
 
   "common.submit": "Posalji",
+  "common.save": "Sacuvaj",
   "common.id": "ID",
   "common.username": "Korisnicko ime",
   "common.password": "Lozinka",
   "common.email": "Email",
   "common.name": "Ime",
+  "common.status": "Status",
   "common.createdAt": "Kreirano",
   "common.role": "Rola",
   "common.clear": "Ocisti",

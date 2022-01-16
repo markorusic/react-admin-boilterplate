@@ -4,7 +4,7 @@ import { HomeOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons'
 import { navigationRoutes } from './core/navigation'
 import { useLang } from './core/localization'
 import { Settings } from './features/settings'
-import { UserTable } from './features/users/user-table'
+import { UsersPage } from './features/users/users-page'
 
 export let App = () => {
   return (
@@ -20,7 +20,7 @@ export let App = () => {
           path: '/users',
           title: 'page.users',
           icon: <UserOutlined />,
-          element: <UserTable />
+          element: <UsersPage />
         },
         {
           path: '/settings',

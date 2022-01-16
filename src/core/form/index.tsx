@@ -131,7 +131,7 @@ let FormUI: FC = ({ children }) => {
   )
 }
 
-export interface BaseInputProps {
+export type BaseInputProps = {
   name: string
   label?: TranslationKeys
   unsafe_label?: string
@@ -189,7 +189,7 @@ export let SubmitButton: FC<ButtonProps> = props => {
         htmlType="submit"
         loading={form.isSubmitting}
       >
-        {props.children ?? useLang().t('common.submit')}
+        {props.children ?? useLang().t('common.save')}
       </Button>
     </div>
   )
@@ -229,8 +229,7 @@ export let NumberInput: FC<NumberInputProps> = props => {
   )
 }
 
-type DateInputProps = BaseInputProps & DatePickerProps
-
+export type DateInputProps = BaseInputProps & DatePickerProps
 export let DateInput: React.FC<DateInputProps> = props => {
   let [field, , helpers] = useField(props.name)
   return (

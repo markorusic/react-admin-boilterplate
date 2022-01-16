@@ -3,11 +3,13 @@
   "error.unknown": "An error occured!",
 
   "common.submit": "Submit",
+  "common.save": "Save",
   "common.id": "ID",
   "common.username": "Username",
   "common.password": "Password",
   "common.email": "Email",
   "common.name": "Name",
+  "common.status": "Status",
   "common.createdAt": "Created At",
   "common.role": "Role",
   "common.clear": "Clear",

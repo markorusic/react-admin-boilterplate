@@ -2,9 +2,12 @@ import React, { createContext, FC, useContext } from 'react'
 import { ID } from '../types'
 import { useStoredState } from '../utils/use-stored-state'
 
-export type UserRole = 'admin' | 'super-admin'
+export enum UserRole {
+  admin = 'admin',
+  superAdmin = 'super-admin'
+}
 
-export let userRoleLevels: UserRole[] = ['admin', 'super-admin']
+export let userRoleLevels: UserRole[] = [UserRole.admin, UserRole.superAdmin]
 
 export type User = {
   id: ID
@@ -28,7 +31,7 @@ export let AuthProvider: FC = ({ children }) => {
     login: async credentials => {
       // let { data } = await axios.post<User>('/api/login', credentials)
       await new Promise(r => setTimeout(r, 1500))
-      let data: User = { id: 1, name: 'Jon Doe', role: 'super-admin' }
+      let data: User = { id: 1, name: 'Jon Doe', role: UserRole.superAdmin }
       setUser(data)
     }
   }

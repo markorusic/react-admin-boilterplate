@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useQuery, UseQueryResult } from 'react-query'
 import { notification, TableProps as BaseTableProps } from 'antd'
-import { Page, PageRequestDto } from '../types'
+import { Page, PageRequest } from '../types'
 import { useLang } from '../localization'
 import { tableOnChangeAdapter, paginationAdapter } from './table-adapters'
 import { TableColumn, TableProps } from './table'
@@ -27,7 +27,7 @@ export let usePageableTable = <PageItem, FetchParams>({
   PageItem,
   FetchParams
 > => {
-  let [queryParams, setQueryParams] = useState<FetchParams & PageRequestDto>({
+  let [queryParams, setQueryParams] = useState<FetchParams & PageRequest>({
     // @ts-ignore
     page: 0,
     size: 10,

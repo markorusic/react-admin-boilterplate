@@ -2,7 +2,7 @@ export type ID = string | number
 
 export type Identifiable = { id: ID }
 
-export type PageRequestDto = { page?: number; size?: number }
+export type PageRequest = { page?: number; size?: number }
 
 export type Page<T> = {
   content: T[]
@@ -12,6 +12,6 @@ export type Page<T> = {
   pageCount: number
 }
 
-export type ErrorResponseDto = {
+export type ErrorResponse = {
   response: { data: { message: string } }
 }

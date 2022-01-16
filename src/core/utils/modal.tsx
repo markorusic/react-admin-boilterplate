@@ -6,7 +6,7 @@ import {
   Modal as BaseModal
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { useLang } from '../localization'
+import { TranslationKeys, useLang } from '../localization'
 
 export type ModalInjectedProps = {
   on: boolean
@@ -26,6 +26,7 @@ export type ModalProps = BaseModalProps & {
 export let useModal = () => React.useContext(ModalContext)
 
 export let Modal = ({ on, close, children, ...props }: ModalProps) => {
+  let { t } = useLang()
   let [confirmCancel, setConfirmCancel] = useState(false)
 
   let value: ModalInjectedProps = useMemo(
@@ -49,7 +50,7 @@ export let Modal = ({ on, close, children, ...props }: ModalProps) => {
     event.stopPropagation()
     if (confirmCancel) {
       BaseModal.confirm({
-        title: useLang().t('common.confirmModalClose'),
+        title: t('common.confirmModalClose'),
         onOk: close
       })
     } else {
@@ -81,7 +82,8 @@ export let Modal = ({ on, close, children, ...props }: ModalProps) => {
 }
 
 export interface ButtonModalProps {
-  title: string
+  title?: TranslationKeys
+  unsafe_title?: string
   buttonProps?: ButtonProps
   modalProps?: BaseModalProps
   children: ModalProps['children']
@@ -89,19 +91,23 @@ export interface ButtonModalProps {
 
 export let ButtonModal: FC<ButtonModalProps> = ({
   title,
+  unsafe_title,
   buttonProps,
   modalProps,
   children
 }) => {
+  let { t } = useLang()
   let [on, setOn] = useState(false)
+  let displayTitle = title ? t(title) : unsafe_title
+
   return (
     <>
       <Button {...buttonProps} onClick={() => setOn(true)}>
-        {title}
+        {displayTitle}
       </Button>
 
       <Modal
-        title={title}
+        title={displayTitle}
         footer={null}
         destroyOnClose
         {...modalProps}
@@ -114,9 +120,9 @@ export let ButtonModal: FC<ButtonModalProps> = ({
   )
 }
 
-export let createButtonModalProps = {
+export let createButtonModalProps: Omit<ButtonModalProps, 'children'> = {
   title: 'common.create',
-  modalProps: { width: 1200 },
+  // modalProps: { width: 1200 },
   buttonProps: {
     type: 'primary',
     shape: 'round',
