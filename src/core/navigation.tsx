@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react'
 import { Link, Route, useLocation } from 'react-router-dom'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { Menu, PageHeader } from 'antd'
-import { useUser } from './auth/hooks'
+import { RequireAuth, useAuth } from './auth'
 import { useLang } from './localization'
 
 export type NavigationItem = {
@@ -22,9 +22,14 @@ export let navigationRoutes = (navigationItems: NavigationItem[]) => {
             key={item.path}
             path={item.path}
             element={
-              <PageLayout title={item.title} navigationItems={navigationItems}>
-                {item.element}
-              </PageLayout>
+              <RequireAuth>
+                <PageLayout
+                  title={item.title}
+                  navigationItems={navigationItems}
+                >
+                  {item.element}
+                </PageLayout>
+              </RequireAuth>
             }
           />
         )
@@ -54,7 +59,7 @@ export let PageLayout: FC<PageLayoutProps> = ({
 }) => {
   let location = useLocation()
   let { t } = useLang()
-  let { user, logout } = useUser()
+  let { user, logout } = useAuth()
 
   let visibleNavigationItems = navigationItems.filter(item => !item.hidden)
 

@@ -1,10 +1,20 @@
 {
+  "error.unknown": "An error occured!",
+
+  "common.submit": "Submit",
+  "common.username": "Username",
+  "common.password": "Password",
+  "common.email": "Email",
+
+  "auth.login": "Login",
   "auth.logout": "Logout",
 
   "page.notfound": "Not Found",
   "page.settings": "Settings",
   "page.home": "Home",
   "page.users": "Users",
+
+  "login.title": "Dashboard | Login",
 
   "settings.lang": "Language"
 }

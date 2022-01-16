@@ -1,10 +1,20 @@
 {
-  "auth.logout": "Izloguj se",
+  "error.unknown": "Doslo je do greske!",
+
+  "common.submit": "Posalji",
+  "common.username": "Korisnicko ime",
+  "common.password": "Lozinka",
+  "common.email": "Email",
+
+  "auth.login": "Prijavi se",
+  "auth.logout": "Odjavi se",
 
   "page.notfound": "Nije pronadjeno",
   "page.settings": "Podešavanja",
   "page.home": "Početna",
   "page.users": "Korisnici",
+
+  "login.title": "Komandna tabla | Prijava",
 
   "settings.lang": "Jezik"
 }
