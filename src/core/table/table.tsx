@@ -1,18 +1,24 @@
 import React from 'react'
 import { Table as BaseTable, TableProps as BaseTableProps } from 'antd'
-
 import { ColumnType } from 'antd/lib/table'
 import { Spin } from '../utils/spin'
+import { TranslationKeys, useLang } from '../localization'
 
-export type TableColumn<T> = Omit<ColumnType<T>, 'dataIndex' | 'key'> & {
+export type TableColumn<T> = Omit<
+  ColumnType<T>,
+  'dataIndex' | 'key' | 'title'
+> & {
   name: string
+  title?: TranslationKeys
+  unsafe_title?: string
 }
 
-export interface TableProps<T> extends Omit<BaseTableProps<T>, 'columns'> {
+export type TableProps<T> = Omit<BaseTableProps<T>, 'columns'> & {
   columns?: TableColumn<T>[]
 }
 
 export let Table = <T,>({ columns = [], loading, ...props }: TableProps<T>) => {
+  let { t } = useLang()
   return (
     <BaseTable
       // @ts-ignore
@@ -21,6 +27,7 @@ export let Table = <T,>({ columns = [], loading, ...props }: TableProps<T>) => {
       // @ts-ignore
       columns={columns.map(({ name, ...column }) => ({
         ...column,
+        title: column.title ? t(column.title) : column.unsafe_title,
         dataIndex: name,
         key: name
       }))}

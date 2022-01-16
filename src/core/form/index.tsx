@@ -34,8 +34,7 @@ import { SaveOutlined } from '@ant-design/icons'
 import { Table, TableProps } from '../table'
 import { ID, Identifiable } from '../types'
 import { TranslationKeys, useLang } from '../localization'
-
-let DATE_FORMAT = 'D.M.YYYY HH:mm'
+import { DATE_FORMAT } from '../utils/date'
 
 export type FormProps<T> = FormikConfig<T> & {
   successMessage?: TranslationKeys | null

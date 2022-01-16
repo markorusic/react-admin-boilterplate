@@ -4,9 +4,9 @@ import { HomeOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons'
 import { navigationRoutes } from './core/navigation'
 import { useLang } from './core/localization'
 import { Settings } from './features/settings'
+import { UserTable } from './features/users/user-table'
 
 export let App = () => {
-  let { t } = useLang()
   return (
     <Routes>
       {navigationRoutes([
@@ -14,13 +14,13 @@ export let App = () => {
           path: '/',
           title: 'page.home',
           icon: <HomeOutlined />,
-          element: <div>{t('page.home')}</div>
+          element: <div>{useLang().t('page.home')}</div>
         },
         {
           path: '/users',
           title: 'page.users',
           icon: <UserOutlined />,
-          element: <div>{t('page.users')}</div>
+          element: <UserTable />
         },
         {
           path: '/settings',
