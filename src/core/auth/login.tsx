@@ -1,13 +1,14 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { z } from 'zod'
 import { useAuth } from './auth-provider'
-import { t, useLang } from '../localization'
+import { useLang } from '../localization'
 import { Form, TextInput, SubmitButton } from '../form'
 import { HeadTitle } from '../utils/head-title'
+import { zError } from '../validation'
 
 let Credentials = z.object({
-  username: z.string({ required_error: t('error.requiredField') }),
-  password: z.string({ required_error: t('error.requiredField') })
+  username: z.string(zError.required),
+  password: z.string(zError.required)
 })
 
 export let Login = () => {
@@ -27,7 +28,7 @@ export let Login = () => {
       <HeadTitle title="login.title" />
       <h1 style={{ textAlign: 'center' }}>{t('login.title')}</h1>
       <Form
-        zodValidationSchema={Credentials}
+        zValidationSchema={Credentials}
         initialValues={{ username: '', password: '' }}
         onSubmit={login}
       >

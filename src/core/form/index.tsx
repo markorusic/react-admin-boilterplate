@@ -41,7 +41,7 @@ import { validationSchemaAdapter } from '../utils/validation-adapter'
 export type FormProps<T> = FormikConfig<T> & {
   successMessage?: TranslationKeys | null
   closeModalOnSubmit?: boolean
-  zodValidationSchema?: ZodSchema<T>
+  zValidationSchema?: ZodSchema<T>
 }
 
 export type CreateFormProps<T = any> = Omit<FormProps<T>, 'initialValues'> & {
@@ -64,7 +64,7 @@ export let withForm = <Props, FormValues>(
 export function Form<T>({
   children,
   successMessage,
-  zodValidationSchema,
+  zValidationSchema,
   enableReinitialize = true,
   closeModalOnSubmit = true,
   ...props
@@ -76,8 +76,8 @@ export function Form<T>({
     <Formik
       enableReinitialize={enableReinitialize}
       validationSchema={
-        zodValidationSchema
-          ? validationSchemaAdapter(zodValidationSchema)
+        zValidationSchema
+          ? validationSchemaAdapter(zValidationSchema)
           : undefined
       }
       {...props}
@@ -147,19 +147,14 @@ export let FormInputContainer: FC<BaseInputProps> = ({
 }) => {
   let { t } = useLang()
   let [, meta] = useField(name)
+
   let id = `${name}`
-
   let displayLabel = label ? t(label) : unsafe_label
-
-  // TODO: this is hacky solution, consider something more better
-  let errorValue = meta.error?.replace(name, displayLabel)
 
   let errorElement =
     meta.touched && meta.error ? (
       <div>
-        <span style={{ color: 'red' }}>
-          {t(errorValue as TranslationKeys) ?? errorValue}
-        </span>
+        <span style={{ color: 'red' }}>{t(meta.error as TranslationKeys)}</span>
       </div>
     ) : null
 

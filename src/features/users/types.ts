@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { UserRole } from '../../core/auth'
 import { PageRequest, ID, Identifiable } from '../../core/types'
+import { zError } from '../../core/validation'
 
 export enum UserStatus {
   active = 'active',
@@ -26,10 +27,10 @@ export type UserResponse = Identifiable & {
 
 export let UserMutationRequest = z.object({
   id: z.number().or(z.string()).optional(),
-  name: z.string().min(1),
-  email: z.string().email(),
-  role: z.nativeEnum(UserRole),
-  status: z.nativeEnum(UserStatus)
+  name: z.string(zError.required),
+  email: z.string(zError.required).email(zError.email),
+  role: z.nativeEnum(UserRole, zError.required),
+  status: z.nativeEnum(UserStatus, zError.required)
 })
 
 export type UserMutationRequest = z.infer<typeof UserMutationRequest>

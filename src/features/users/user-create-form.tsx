@@ -14,7 +14,7 @@ export let UserCreateForm = (props: UserCreateFormProps) => {
   return (
     <Form
       {...props}
-      zodValidationSchema={UserMutationRequest}
+      zValidationSchema={UserMutationRequest}
       initialValues={{
         name: '',
         email: '',

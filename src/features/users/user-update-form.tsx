@@ -12,7 +12,7 @@ export type UserUpdateFormProps = FormProps<UserMutationRequest>
 
 export let UserUpdateForm = (props: UserUpdateFormProps) => {
   return (
-    <Form {...props} zodValidationSchema={UserMutationRequest}>
+    <Form {...props} zValidationSchema={UserMutationRequest}>
       <TextInput name="name" label="common.name" />
       <TextInput name="email" label="common.email" />
       <RadioInput

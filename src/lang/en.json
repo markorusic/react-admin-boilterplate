@@ -1,6 +1,8 @@
 {
-  "error.requiredField": "Required field",
   "error.unknown": "An error occured!",
+  "error.requiredField": "Required field",
+  "error.email": "Invalid email",
+  "error.type": "Bad data type",
 
   "common.submit": "Submit",
   "common.save": "Save",

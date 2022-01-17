@@ -1,6 +1,8 @@
 {
-  "error.requiredField": "Obavezno polje",
   "error.unknown": "Doslo je do greske!",
+  "error.requiredField": "Obavezno polje",
+  "error.email": "Neispravan email",
+  "error.type": "Neispravan tip podatka",
 
   "common.submit": "Posalji",
   "common.save": "Sacuvaj",
