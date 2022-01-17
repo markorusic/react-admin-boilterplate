@@ -27,6 +27,7 @@ export let usePageableTable = <PageItem, FetchParams>({
   PageItem,
   FetchParams
 > => {
+  let { t } = useLang()
   let [queryParams, setQueryParams] = useState<FetchParams & PageRequest>({
     // @ts-ignore
     page: 0,
@@ -39,7 +40,9 @@ export let usePageableTable = <PageItem, FetchParams>({
     queryFn: () => props.queryFn(queryParams),
     keepPreviousData: true,
     enabled,
-    onError: () => notification.error({ message: useLang().t('error.unknown') })
+    onError: () => {
+      notification.error({ message: t('error.unknown') })
+    }
   })
 
   return {

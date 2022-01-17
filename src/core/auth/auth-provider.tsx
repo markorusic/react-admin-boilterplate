@@ -1,7 +1,7 @@
 import React, { createContext, FC, useContext } from 'react'
-import axios from 'axios'
-import { ID } from '../types'
 import { useStoredState } from '../utils/use-stored-state'
+import { http } from '../http-client'
+import { ID } from '../types'
 
 export enum UserRole {
   admin = 'admin',
@@ -30,7 +30,7 @@ export let AuthProvider: FC = ({ children }) => {
     user,
     logout: () => setUser(undefined),
     login: async credentials => {
-      let { data } = await axios.post<User>('/api/login', credentials)
+      let { data } = await http.post<User>('/api/login', credentials)
       setUser(data)
     }
   }
