@@ -9,6 +9,12 @@ import { App } from './app'
 import 'antd/dist/antd.min.css'
 import './index.css'
 
+if (process.env.NODE_ENV === 'development') {
+  let module = import.meta.globEager('./mocks/browser.ts')['./mocks/browser.ts']
+  let { worker } = module
+  worker.start()
+}
+
 ReactDOM.render(
   <BrowserRouter>
     <QueryProvider>

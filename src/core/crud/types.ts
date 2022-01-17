@@ -1,9 +1,14 @@
 import { ReactNode } from 'react'
-import { UseQueryResult } from 'react-query'
+import { UserRole } from '../auth'
 import { CreateFormProps, FormProps } from '../form'
 import { TranslationKeys } from '../localization'
-import { PageableTableProps, UsePageableTableResult } from '../table'
+import { PageableTableProps } from '../table'
 import { ID, Identifiable, Page, PageRequest } from '../types'
+
+export type CrudAccessRoles = {
+  createRole?: UserRole
+  updateRole?: UserRole
+}
 
 export type CrudMessages = {
   createTitle?: TranslationKeys
@@ -44,6 +49,7 @@ export type CrudProps<
     FetchPageParams
   >
   messages?: CrudMessages
+  accessRoles?: CrudAccessRoles
   initialFetchParams?: Partial<FetchPageParams>
   renderTable(
     props: PageableTableProps<PageItemDto, FetchPageParams>

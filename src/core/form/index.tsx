@@ -87,9 +87,7 @@ export function Form<T>({
           // @ts-ignore
           ?.then(() => {
             if (successMessage) {
-              notification.success({
-                message: t(successMessage)
-              })
+              notification.success({ message: t(successMessage) })
             }
             if (closeModalOnSubmit) {
               modal?.close()

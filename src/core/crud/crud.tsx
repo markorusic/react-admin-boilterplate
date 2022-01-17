@@ -1,14 +1,14 @@
 import React, { createContext, useContext, useState } from 'react'
-import { Button, notification } from 'antd'
+import { Button } from 'antd'
 import { PlusCircleOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useQuery, UseQueryResult } from 'react-query'
 import { Modal, ButtonModal } from '../utils/modal'
 import { ID, Identifiable, PageRequest } from '../types'
 import { usePageableTable, UsePageableTableResult } from '../table'
-import { useLang } from '../localization'
 import { Spin } from '../utils/spin'
 import { CrudProps } from './types'
 import { CrudMessages } from '.'
+import { checkAccess, useAuth } from '../auth'
 
 let CrudTableContext = createContext<UsePageableTableResult<any, any> | null>(
   null
@@ -28,7 +28,7 @@ let defaultMessages: CrudMessages = {
   updateTitle: 'common.update'
 }
 
-function Crud<
+export function Crud<
   PageItemDto extends Identifiable,
   ItemDto,
   CreateDto,
@@ -40,18 +40,22 @@ function Crud<
   renderTable,
   messages = defaultMessages,
   initialFetchParams = {},
+  accessRoles = {},
   renderCreateForm = nullRender,
   renderUpdateForm = nullRender
 }: CrudProps<PageItemDto, ItemDto, CreateDto, UpdateDto, FetchPageParams>) {
-  let { t } = useLang()
+  let { user } = useAuth()
   let table = usePageableTable({
     name: name,
     initialQueryParams: initialFetchParams,
     queryFn: entityService.fetchPage
   })
 
-  let enableUpdate = renderUpdateForm !== nullRender
-  let enableCreate = renderCreateForm !== nullRender
+  let enableCreate =
+    renderCreateForm !== nullRender && checkAccess(user, accessRoles.createRole)
+
+  let enableUpdate =
+    renderUpdateForm !== nullRender && checkAccess(user, accessRoles.updateRole)
 
   let [activeRecordId, setActiveRecordId] = useState<ID>()
   let activeRecordQuery = useQuery({
@@ -81,15 +85,9 @@ function Crud<
                   renderCreateForm({
                     successMessage: 'common.successfullyExecuted',
                     async onSubmit(values) {
-                      try {
-                        await entityService.create(values as CreateDto)
-                        table.query.refetch()
-                        modal.close()
-                      } catch (err) {
-                        notification.error({
-                          message: t('error.unknown')
-                        })
-                      }
+                      await entityService.create(values as CreateDto)
+                      table.query.refetch()
+                      modal.close()
                     }
                   })
                 }
@@ -134,13 +132,9 @@ function Crud<
                   successMessage: 'common.successfullyExecuted',
                   activeRecord: activeRecordQuery.data,
                   async onSubmit(values) {
-                    try {
-                      await entityService.update(values)
-                      activeRecordQuery.refetch()
-                      table.query.refetch()
-                    } catch (err) {
-                      notification.error({ message: t('error.unknown') })
-                    }
+                    await entityService.update(values)
+                    activeRecordQuery.refetch()
+                    table.query.refetch()
                   }
                 })
               ) : (
@@ -153,5 +147,3 @@ function Crud<
     </CrudTableContext.Provider>
   )
 }
-
-export default Crud

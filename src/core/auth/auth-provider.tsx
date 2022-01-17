@@ -1,4 +1,5 @@
 import React, { createContext, FC, useContext } from 'react'
+import axios from 'axios'
 import { ID } from '../types'
 import { useStoredState } from '../utils/use-stored-state'
 
@@ -29,9 +30,7 @@ export let AuthProvider: FC = ({ children }) => {
     user,
     logout: () => setUser(undefined),
     login: async credentials => {
-      // let { data } = await axios.post<User>('/api/login', credentials)
-      await new Promise(r => setTimeout(r, 1500))
-      let data: User = { id: 1, name: 'Jon Doe', role: UserRole.superAdmin }
+      let { data } = await axios.post<User>('/api/login', credentials)
       setUser(data)
     }
   }
