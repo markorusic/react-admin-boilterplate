@@ -1,4 +1,3 @@
-import React from 'react'
 import { Table, TableProps, useTextFilter } from '../../core/table'
 import { formatDate } from '../../core/utils/date'
 import { UserResponse } from './types'

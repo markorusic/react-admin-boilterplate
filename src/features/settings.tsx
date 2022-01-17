@@ -1,4 +1,3 @@
-import React from 'react'
 import { useAuth } from '../core/auth'
 import { useLang, LangSwitch } from '../core/localization'
 

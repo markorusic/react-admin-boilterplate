@@ -1,4 +1,3 @@
-import React from 'react'
 import { Table as BaseTable, TableProps as BaseTableProps } from 'antd'
 import { ColumnType } from 'antd/lib/table'
 import { Spin } from '../utils/spin'

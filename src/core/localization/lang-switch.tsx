@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button } from 'antd'
 import { LangSlugs, langNames, useChangeLang, useLang } from '.'
 

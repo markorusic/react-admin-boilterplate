@@ -1,4 +1,3 @@
-import React from 'react'
 import { TranslationKeys, useLang } from '../localization'
 
 export type HeadTitleProps = {

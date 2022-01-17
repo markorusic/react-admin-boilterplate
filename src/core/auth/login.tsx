@@ -1,4 +1,3 @@
-import React from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { z } from 'zod'
 import { useAuth } from './auth-provider'
