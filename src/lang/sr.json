@@ -15,6 +15,8 @@
   "common.clear": "Ocisti",
   "common.search": "Pretraga",
   "common.create": "Kreiraj",
+  "common.update": "Azuriraj",
+  "common.title": "Naslov",
   "common.successfullyExecuted": "Uspesno izvrseno!",
   "common.confirmModalClose": "Da li ste sigurni da zelite da zatvorite ovaj prozor?",
 

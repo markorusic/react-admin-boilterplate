@@ -28,29 +28,24 @@ import {
   Switch
 } from 'antd'
 import { TextAreaProps as BaseTextAreaProps } from 'antd/lib/input'
+import { SaveOutlined } from '@ant-design/icons'
+import { ZodSchema } from 'zod'
 import { DatePickerProps, DatePicker } from './date-picker'
 import { useModal } from '../utils/modal'
-import { SaveOutlined } from '@ant-design/icons'
 import { Table, TableProps } from '../table'
 import { ID, Identifiable } from '../types'
 import { TranslationKeys, useLang } from '../localization'
 import { DATE_FORMAT } from '../utils/date'
+import { validationSchemaAdapter } from '../utils/validation-adapter'
 
 export type FormProps<T> = FormikConfig<T> & {
   successMessage?: TranslationKeys | null
   closeModalOnSubmit?: boolean
+  zodValidationSchema?: ZodSchema<T>
 }
 
-export type CreateFormProps<T = any> = Omit<
-  FormProps<T>,
-  'initialValues' | 'onSubmit'
-> & {
+export type CreateFormProps<T = any> = Omit<FormProps<T>, 'initialValues'> & {
   initialValues?: T
-  refreshData?: () => void
-}
-
-export type UpdateFormProps<T> = Omit<FormProps<T>, 'onSubmit'> & {
-  refreshData?: () => void
 }
 
 export let withForm = <Props, FormValues>(
@@ -68,16 +63,23 @@ export let withForm = <Props, FormValues>(
 
 export function Form<T>({
   children,
-  successMessage = 'common.successfullyExecuted',
+  successMessage,
+  zodValidationSchema,
   enableReinitialize = true,
   closeModalOnSubmit = true,
   ...props
 }: FormProps<T>) {
   let { t } = useLang()
   let modal = useModal()
+
   return (
     <Formik
       enableReinitialize={enableReinitialize}
+      validationSchema={
+        zodValidationSchema
+          ? validationSchemaAdapter(zodValidationSchema)
+          : undefined
+      }
       {...props}
       onSubmit={(values, helpers) =>
         props

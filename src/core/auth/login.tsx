@@ -4,7 +4,6 @@ import { z } from 'zod'
 import { useAuth } from './auth-provider'
 import { t, useLang } from '../localization'
 import { Form, TextInput, SubmitButton } from '../form'
-import { validationSchemaAdapter } from '../utils/validation-adapter'
 import { HeadTitle } from '../utils/head-title'
 
 let Credentials = z.object({
@@ -29,8 +28,7 @@ export let Login = () => {
       <HeadTitle title="login.title" />
       <h1 style={{ textAlign: 'center' }}>{t('login.title')}</h1>
       <Form
-        successMessage={null}
-        validationSchema={validationSchemaAdapter(Credentials)}
+        zodValidationSchema={Credentials}
         initialValues={{ username: '', password: '' }}
         onSubmit={login}
       >

@@ -15,6 +15,8 @@
   "common.clear": "Clear",
   "common.search": "Search",
   "common.create": "Create",
+  "common.update": "Update",
+  "common.title": "Title",
   "common.successfullyExecuted": "Successfully executed!",
   "common.confirmModalClose": "Are you sure that you want to close modal?",
 

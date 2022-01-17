@@ -25,7 +25,7 @@ export type UserResponse = Identifiable & {
 }
 
 export let UserMutationRequest = z.object({
-  id: z.number().optional(),
+  id: z.number().or(z.string()).optional(),
   name: z.string().min(1),
   email: z.string().email(),
   role: z.nativeEnum(UserRole),

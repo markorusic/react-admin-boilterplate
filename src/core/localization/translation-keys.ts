@@ -15,6 +15,8 @@ export type TranslationKeys =
 	| "common.clear"
 	| "common.search"
 	| "common.create"
+	| "common.update"
+	| "common.title"
 	| "common.successfullyExecuted"
 	| "common.confirmModalClose"
 	| "auth.login"
