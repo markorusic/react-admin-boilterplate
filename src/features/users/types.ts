@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { UserRole } from '../../core/auth'
-import { PageRequest, ID, Identifiable } from '../../core/types'
-import { zError } from '../../core/validation'
+import { PageRequest, ID, Identifiable, SortBy } from '../../core/types'
+import { zMessage } from '../../core/validation'
 
 export enum UserStatus {
   active = 'active',
@@ -15,6 +15,7 @@ export type UserRequest = PageRequest & {
   role?: UserRole
   status?: UserStatus
   createdAt?: string
+  sortBy?: SortBy<'createdAt' | 'name'>
 }
 
 export type UserResponse = Identifiable & {
@@ -27,10 +28,10 @@ export type UserResponse = Identifiable & {
 
 export let UserMutationRequest = z.object({
   id: z.number().or(z.string()).optional(),
-  name: z.string(zError.required),
-  email: z.string(zError.required).email(zError.email),
-  role: z.nativeEnum(UserRole, zError.required),
-  status: z.nativeEnum(UserStatus, zError.required)
+  name: z.string(zMessage.required),
+  email: z.string(zMessage.required).email(zMessage.email),
+  role: z.nativeEnum(UserRole, zMessage.required),
+  status: z.nativeEnum(UserStatus, zMessage.required)
 })
 
 export type UserMutationRequest = z.infer<typeof UserMutationRequest>

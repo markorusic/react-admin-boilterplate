@@ -24,8 +24,8 @@ export type EntityService<
 > = {
   fetchPage(params: FetchPageParams): Promise<Page<PageItemDto>>
   fetchById(id: ID): Promise<ItemDto>
-  create(dto: CreateDto): Promise<any>
-  update(dto: UpdateDto): Promise<any>
+  create(dto: CreateDto): Promise<unknown>
+  update(dto: UpdateDto): Promise<unknown>
 }
 
 export type UpdateFormProps<T, K> = Omit<FormProps<T>, 'initialValues'> & {
@@ -34,10 +34,10 @@ export type UpdateFormProps<T, K> = Omit<FormProps<T>, 'initialValues'> & {
 }
 
 export type CrudProps<
-  PageItemDto extends Identifiable,
-  ItemDto,
-  CreateDto,
-  UpdateDto = CreateDto & { id: string | number },
+  PageItemDto extends Identifiable = Identifiable & unknown,
+  ItemDto = unknown,
+  CreateDto = unknown,
+  UpdateDto = CreateDto & Identifiable,
   FetchPageParams extends PageRequest = PageRequest
 > = {
   name: string

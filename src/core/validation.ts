@@ -11,7 +11,7 @@ export let strintToBoolean = z.preprocess(
   z.boolean()
 )
 
-export let zError = {
+export let zMessage = {
   required: { required_error: t('error.requiredField') },
   type: { invalid_type_error: t('error.type') },
   email: { message: t('error.email') }

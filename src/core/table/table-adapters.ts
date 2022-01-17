@@ -49,7 +49,7 @@ export let tableOnChangeAdapter =
     // @ts-ignore
     if (sorter.order) {
       // @ts-ignore
-      params.sort = [sorter.field, sorter.order.slice(0, -3)].join(',')
+      params.sortBy = [sorter.field, sorter.order.slice(0, -3)].join(',')
     }
 
     Object.keys(filters).forEach(key => {

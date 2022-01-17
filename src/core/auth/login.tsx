@@ -4,11 +4,11 @@ import { useAuth } from './auth-provider'
 import { useLang } from '../localization'
 import { Form, TextInput, SubmitButton } from '../form'
 import { HeadTitle } from '../utils/head-title'
-import { zError } from '../validation'
+import { zMessage } from '../validation'
 
 let Credentials = z.object({
-  username: z.string(zError.required),
-  password: z.string(zError.required)
+  username: z.string(zMessage.required),
+  password: z.string(zMessage.required)
 })
 
 export let Login = () => {

@@ -32,7 +32,7 @@ export function Crud<
   PageItemDto extends Identifiable,
   ItemDto,
   CreateDto,
-  UpdateDto = CreateDto & { id: string | number },
+  UpdateDto = CreateDto & Identifiable,
   FetchPageParams extends PageRequest = PageRequest
 >({
   name,
@@ -51,18 +51,18 @@ export function Crud<
     queryFn: entityService.fetchPage
   })
 
-  let enableCreate =
-    renderCreateForm !== nullRender && checkAccess(user, accessRoles.createRole)
-
-  let enableUpdate =
-    renderUpdateForm !== nullRender && checkAccess(user, accessRoles.updateRole)
-
   let [activeRecordId, setActiveRecordId] = useState<ID>()
   let activeRecordQuery = useQuery({
     enabled: activeRecordId !== undefined,
     queryKey: [name, 'active-record', activeRecordId],
     queryFn: () => entityService.fetchById(activeRecordId as ID)
   })
+
+  let enableCreate =
+    renderCreateForm !== nullRender && checkAccess(user, accessRoles.createRole)
+
+  let enableUpdate =
+    renderUpdateForm !== nullRender && checkAccess(user, accessRoles.updateRole)
 
   return (
     <CrudTableContext.Provider value={table}>

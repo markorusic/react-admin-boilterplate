@@ -9,6 +9,7 @@ export let UsersPage = () => {
     <Crud
       name="users-crud"
       entityService={userService}
+      initialFetchParams={{ sortBy: 'createdAt,desc' }}
       renderTable={props => <UserTable {...props} />}
       renderCreateForm={props => <UserCreateForm {...props} />}
       renderUpdateForm={props => (
