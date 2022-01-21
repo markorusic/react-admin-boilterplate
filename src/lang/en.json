@@ -21,6 +21,7 @@
   "common.title": "Title",
   "common.successfullyExecuted": "Successfully executed!",
   "common.confirmModalClose": "Are you sure that you want to close modal?",
+  "common.searchTerm": "Search term",
 
   "auth.login": "Login",
   "auth.logout": "Logout",

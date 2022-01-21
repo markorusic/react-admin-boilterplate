@@ -16,7 +16,7 @@ export type TableProps<T> = Omit<BaseTableProps<T>, 'columns'> & {
   columns?: TableColumn<T>[]
 }
 
-export let Table = <T,>({ columns = [], loading, ...props }: TableProps<T>) => {
+export function Table<T>({ columns = [], loading, ...props }: TableProps<T>) {
   let { t } = useLang()
   return (
     <BaseTable

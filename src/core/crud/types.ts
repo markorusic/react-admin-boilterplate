@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { UserRole } from '../auth'
 import { CreateFormProps, FormProps } from '../form'
 import { TranslationKeys } from '../localization'
@@ -50,10 +50,13 @@ export type CrudProps<
   >
   messages?: CrudMessages
   accessRoles?: CrudAccessRoles
-  initialFetchParams?: Partial<FetchPageParams>
+  initialFetchParams?: FetchPageParams
   renderTable(
     props: PageableTableProps<PageItemDto, FetchPageParams>
   ): ReactNode
   renderCreateForm?(props: CreateFormProps<CreateDto>): ReactNode
   renderUpdateForm?(props: UpdateFormProps<UpdateDto, ItemDto>): ReactNode
+  renderHeader?(
+    props: PageableTableProps<PageItemDto, FetchPageParams>
+  ): ReactNode
 }

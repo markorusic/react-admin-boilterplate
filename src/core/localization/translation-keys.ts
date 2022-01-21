@@ -21,6 +21,7 @@ export type TranslationKeys =
 	| "common.title"
 	| "common.successfullyExecuted"
 	| "common.confirmModalClose"
+	| "common.searchTerm"
 	| "auth.login"
 	| "auth.logout"
 	| "page.notfound"

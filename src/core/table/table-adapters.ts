@@ -1,5 +1,6 @@
 import { PaginationProps, TablePaginationConfig } from 'antd'
 import { FilterValue, SorterResult } from 'antd/lib/table/interface'
+import { TableColumn } from './table'
 
 type OmitedPaginationProps =
   | 'onChange'
@@ -15,15 +16,15 @@ export interface AdaptedPaginationProps
   onShowSizeChange?(page: string, size: string): void
 }
 
-export let noop = () => {}
+export function noop() {}
 
-export let paginationAdapter = ({
+export function paginationAdapter({
   current,
   pageSize,
   onChange = noop,
   onShowSizeChange = noop,
   ...props
-}: AdaptedPaginationProps): PaginationProps => {
+}: AdaptedPaginationProps): PaginationProps {
   return {
     showSizeChanger: false,
     ...props,
@@ -35,30 +36,59 @@ export let paginationAdapter = ({
   }
 }
 
-export let tableOnChangeAdapter =
-  (fn: (params: Record<string, number | string>) => void) =>
-  <T>(
+type Params = Record<string, number | string | boolean | undefined | null>
+type OnChangeAdapterCallback = (params: Params) => void
+
+export function tableOnChangeAdapter(fn: OnChangeAdapterCallback) {
+  return function <T>(
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
     sorter: SorterResult<T> | SorterResult<T>[]
-  ) => {
-    const params = {
+  ) {
+    console.log('on cejndz')
+    let params: Params = {
       page: (pagination.current ?? 1) - 1
     }
 
-    // @ts-ignore
-    if (sorter.order) {
-      // @ts-ignore
-      params.sortBy = [sorter.field, sorter.order.slice(0, -3)].join(',')
+    let { order, field } = Array.isArray(sorter) ? sorter[0] : sorter
+    if (order) {
+      params.sortBy = [field, order.slice(0, -3)].join(',')
+    } else {
+      params.sortBy = undefined
     }
 
     Object.keys(filters).forEach(key => {
-      // @ts-ignore
-      params[key] = filters[key]?.[0]
-      // if (filters[key]) {
-      //   // const value = filters[key]?.join(',')
-      // }
+      let value = filters[key]?.[0]
+      params[key] = value
     })
 
     fn(params)
   }
+}
+
+export function pageableTableColumnsAdapter<T>(
+  params: Params,
+  columns: TableColumn<T>[] = []
+): TableColumn<T>[] {
+  return columns.map(column => {
+    let { sortBy } = params
+    let filterValue = params[column.name]
+
+    let newColumn = { ...column }
+
+    if (filterValue) {
+      newColumn.filteredValue = [filterValue]
+    } else {
+      newColumn.filteredValue = []
+    }
+
+    if (newColumn.sorter && sortBy) {
+      let [columnName, order] = sortBy.toString().split(',')
+      if (columnName === column.name) {
+        newColumn.sortOrder = order === 'desc' ? 'descend' : 'ascend'
+      }
+    }
+
+    return newColumn
+  })
+}

@@ -4,17 +4,15 @@ import { PlusCircleOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useQuery, UseQueryResult } from 'react-query'
 import { Modal, ButtonModal } from '../utils/modal'
 import { ID, Identifiable, PageRequest } from '../types'
-import { usePageableTable, UsePageableTableResult } from '../table'
+import { usePageableTable, PageableTableProps } from '../table'
 import { Spin } from '../utils/spin'
 import { CrudProps } from './types'
 import { CrudMessages } from '.'
 import { checkAccess, useAuth } from '../auth'
 
-let CrudTableContext = createContext<UsePageableTableResult<any, any> | null>(
-  null
-)
+let CrudTableContext = createContext<PageableTableProps<any, any> | null>(null)
 export let useCrudTable = <T, K>() => {
-  return useContext(CrudTableContext) as UsePageableTableResult<T, K>
+  return useContext(CrudTableContext) as PageableTableProps<T, K>
 }
 
 let CrudActiveRecordContext = createContext<UseQueryResult<any> | null>(null)
@@ -39,10 +37,11 @@ export function Crud<
   entityService,
   renderTable,
   messages = defaultMessages,
-  initialFetchParams = {},
+  initialFetchParams,
   accessRoles = {},
   renderCreateForm = nullRender,
-  renderUpdateForm = nullRender
+  renderUpdateForm = nullRender,
+  renderHeader = nullRender
 }: CrudProps<PageItemDto, ItemDto, CreateDto, UpdateDto, FetchPageParams>) {
   let { user } = useAuth()
   let table = usePageableTable({
@@ -75,26 +74,33 @@ export function Crud<
               marginBottom: 8
             }}
           >
-            {enableCreate ? (
-              <ButtonModal
-                title={messages.createTitle ?? defaultMessages.createTitle}
-                buttonProps={{ type: 'primary', icon: <PlusCircleOutlined /> }}
-                modalProps={{ width: 900, destroyOnClose: true }}
-              >
-                {modal =>
-                  renderCreateForm({
-                    successMessage: 'common.successfullyExecuted',
-                    async onSubmit(values) {
-                      await entityService.create(values as CreateDto)
-                      table.query.refetch()
-                      modal.close()
-                    }
-                  })
-                }
-              </ButtonModal>
-            ) : (
-              <div />
-            )}
+            <div style={{ display: 'flex', flex: 1 }}>
+              {enableCreate ? (
+                <ButtonModal
+                  title={messages.createTitle ?? defaultMessages.createTitle}
+                  buttonProps={{
+                    type: 'primary',
+                    icon: <PlusCircleOutlined />
+                  }}
+                  modalProps={{ width: 900, destroyOnClose: true }}
+                >
+                  {modal =>
+                    renderCreateForm({
+                      successMessage: 'common.successfullyExecuted',
+                      async onSubmit(values) {
+                        await entityService.create(values as CreateDto)
+                        table.query.refetch()
+                        modal.close()
+                      }
+                    })
+                  }
+                </ButtonModal>
+              ) : null}
+
+              {renderHeader !== nullRender ? (
+                <div>{renderHeader(table)}</div>
+              ) : null}
+            </div>
 
             <Button
               type="ghost"

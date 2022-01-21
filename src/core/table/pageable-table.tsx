@@ -3,33 +3,42 @@ import { useQuery, UseQueryResult } from 'react-query'
 import { notification, TableProps as BaseTableProps } from 'antd'
 import { Page, PageRequest } from '../types'
 import { useLang } from '../localization'
-import { tableOnChangeAdapter, paginationAdapter } from './table-adapters'
-import { TableColumn, TableProps } from './table'
+import {
+  tableOnChangeAdapter,
+  paginationAdapter,
+  pageableTableColumnsAdapter
+} from './table-adapters'
+import { Table, TableProps } from './table'
 
-export type UsePageableTableOptions<PageItem, FetchParams> = {
+export type UsePageableTableOptions<
+  PageItem,
+  FetchParams extends PageRequest
+> = {
   name: string
   queryFn(params: FetchParams): Promise<Page<PageItem>>
   initialQueryParams?: FetchParams
   enabled?: boolean
 }
 
-export type UsePageableTableResult<PageItem, FetchParams> =
-  TableProps<PageItem> & {
-    query: UseQueryResult<Page<PageItem>>
-    queryParams: FetchParams
-    setQueryParams: React.Dispatch<React.SetStateAction<FetchParams>>
-  }
+export type PageableTableProps<
+  PageItem,
+  FetchParams extends PageRequest
+> = TableProps<PageItem> & {
+  query: UseQueryResult<Page<PageItem>>
+  queryParams: FetchParams
+  setQueryParams: React.Dispatch<React.SetStateAction<FetchParams>>
+}
 
-export let usePageableTable = <PageItem, FetchParams>({
+export let usePageableTable = <PageItem, FetchParams extends PageRequest>({
   enabled = true,
   ...props
-}: UsePageableTableOptions<PageItem, FetchParams>): UsePageableTableResult<
+}: UsePageableTableOptions<PageItem, FetchParams>): PageableTableProps<
   PageItem,
   FetchParams
 > => {
   let { t } = useLang()
-  let [queryParams, setQueryParams] = useState<FetchParams & PageRequest>({
-    // @ts-ignore
+  // @ts-ignore
+  let [queryParams, setQueryParams] = useState<FetchParams>({
     page: 0,
     size: 10,
     ...props.initialQueryParams
@@ -66,6 +75,13 @@ export let usePageableTable = <PageItem, FetchParams>({
   }
 }
 
-export type PageableTableProps<T, K> = TableProps<T> & {
-  getColumns?: (table: UsePageableTableResult<T, K>) => TableColumn<T>[]
-} & Pick<UsePageableTableOptions<T, K>, 'initialQueryParams'>
+export function PageableTable<T, K extends PageRequest>(
+  props: PageableTableProps<T, K>
+) {
+  return (
+    <Table
+      {...props}
+      columns={pageableTableColumnsAdapter(props.queryParams, props.columns)}
+    />
+  )
+}

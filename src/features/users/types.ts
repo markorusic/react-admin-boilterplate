@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { UserRole } from '../../core/auth'
-import { PageRequest, ID, Identifiable, SortBy } from '../../core/types'
+import { PageRequest, ID, Identifiable, Sortable } from '../../core/types'
 import { zMessage } from '../../core/validation'
 
 export enum UserStatus {
@@ -8,15 +8,17 @@ export enum UserStatus {
   inactive = 'inactive'
 }
 
-export type UserRequest = PageRequest & {
-  id?: ID
-  name?: string
-  email?: string
-  role?: UserRole
-  status?: UserStatus
-  createdAt?: string
-  sortBy?: SortBy<'createdAt' | 'name'>
-}
+type SortableUserFields = 'id' | 'name' | 'email' | 'createdAt'
+
+export type UserRequest = PageRequest &
+  Sortable<SortableUserFields> & {
+    id?: ID
+    name?: string
+    email?: string
+    role?: UserRole
+    status?: UserStatus
+    createdAt?: string
+  }
 
 export type UserResponse = Identifiable & {
   name: string
