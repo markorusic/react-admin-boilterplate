@@ -22,6 +22,7 @@
   "common.successfullyExecuted": "Uspesno izvrseno!",
   "common.confirmModalClose": "Da li ste sigurni da zelite da zatvorite ovaj prozor?",
   "common.searchTerm": "Termin za pretragu",
+  "common.actions": "Akcije",
 
   "auth.login": "Prijavi se",
   "auth.logout": "Odjavi se",
@@ -34,5 +35,6 @@
   "login.title": "Komandna tabla | Prijava",
 
   "settings.lang": "Jezik",
+  "settings.setLang": "Postavi jezik",
   "settings.myInfo": "Moji podaci"
 }

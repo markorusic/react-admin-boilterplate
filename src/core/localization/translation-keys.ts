@@ -22,6 +22,7 @@ export type TranslationKeys =
 	| "common.successfullyExecuted"
 	| "common.confirmModalClose"
 	| "common.searchTerm"
+	| "common.actions"
 	| "auth.login"
 	| "auth.logout"
 	| "page.notfound"
@@ -30,4 +31,5 @@ export type TranslationKeys =
 	| "page.users"
 	| "login.title"
 	| "settings.lang"
+	| "settings.setLang"
 	| "settings.myInfo";

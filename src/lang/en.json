@@ -22,6 +22,7 @@
   "common.successfullyExecuted": "Successfully executed!",
   "common.confirmModalClose": "Are you sure that you want to close modal?",
   "common.searchTerm": "Search term",
+  "common.actions": "Actions",
 
   "auth.login": "Login",
   "auth.logout": "Logout",
@@ -34,5 +35,6 @@
   "login.title": "Dashboard | Login",
 
   "settings.lang": "Language",
+  "settings.setLang": "Set Language",
   "settings.myInfo": "My Info"
 }

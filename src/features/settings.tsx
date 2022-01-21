@@ -1,23 +1,35 @@
+import { Button, Descriptions } from 'antd'
 import { useAuth } from '../core/auth'
 import { useLang, LangSwitch } from '../core/localization'
 
 export let Settings = () => {
   let { t } = useLang()
-  let { user } = useAuth()
+  let { user, logout } = useAuth()
+
   return (
     <div>
-      <div style={{ marginBottom: '16px' }}>
-        <h3>{t('settings.myInfo')}</h3>
-        <div>
-          {t('common.name')}: {user?.name}
-        </div>
-        <div>
-          {t('common.role')}: {user?.role}
-        </div>
+      <div style={{ marginBottom: 16 }}>
+        <Descriptions title={t('settings.myInfo')} bordered layout="vertical">
+          <Descriptions.Item label={t('common.name')}>
+            {user?.name}
+          </Descriptions.Item>
+
+          <Descriptions.Item label={t('common.role')}>
+            {user?.role}
+          </Descriptions.Item>
+          <Descriptions.Item label={t('common.actions')}>
+            <Button danger onClick={logout}>
+              {t('auth.logout')}
+            </Button>
+          </Descriptions.Item>
+        </Descriptions>
       </div>
       <div>
-        <h3>{t('settings.lang')}</h3>
-        <LangSwitch />
+        <Descriptions title={t('settings.lang')} bordered layout="vertical">
+          <Descriptions.Item label={t('settings.setLang')}>
+            <LangSwitch />
+          </Descriptions.Item>
+        </Descriptions>
       </div>
     </div>
   )
