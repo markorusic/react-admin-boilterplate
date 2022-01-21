@@ -45,7 +45,6 @@ export function tableOnChangeAdapter(fn: OnChangeAdapterCallback) {
     filters: Record<string, FilterValue | null>,
     sorter: SorterResult<T> | SorterResult<T>[]
   ) {
-    console.log('on cejndz')
     let params: Params = {
       page: (pagination.current ?? 1) - 1
     }
@@ -71,10 +70,10 @@ export function pageableTableColumnsAdapter<T>(
   columns: TableColumn<T>[] = []
 ): TableColumn<T>[] {
   return columns.map(column => {
-    let { sortBy } = params
-    let filterValue = params[column.name]
-
     let newColumn = { ...column }
+
+    let { sortBy } = params
+    let filterValue = params[newColumn.name]
 
     if (filterValue) {
       newColumn.filteredValue = [filterValue]
@@ -84,7 +83,7 @@ export function pageableTableColumnsAdapter<T>(
 
     if (newColumn.sorter && sortBy) {
       let [columnName, order] = sortBy.toString().split(',')
-      if (columnName === column.name) {
+      if (columnName === newColumn.name) {
         newColumn.sortOrder = order === 'desc' ? 'descend' : 'ascend'
       }
     }
