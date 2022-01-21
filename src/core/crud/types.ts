@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { UserRole } from '../auth'
 import { CreateFormProps, FormProps } from '../form'
 import { TranslationKeys } from '../localization'
@@ -19,7 +19,7 @@ export type EntityService<
   PageItemDto extends Identifiable,
   ItemDto,
   CreateDto,
-  UpdateDto = CreateDto & { id: string | number },
+  UpdateDto = CreateDto & Identifiable,
   FetchPageParams extends PageRequest = PageRequest
 > = {
   fetchPage(params: FetchPageParams): Promise<Page<PageItemDto>>

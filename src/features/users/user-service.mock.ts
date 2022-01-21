@@ -12,7 +12,7 @@ let usersDataFactory = () => {
       id,
       name: `User ${id}`,
       email: `user${id}@gmail.com`,
-      role: Math.random() > 0.5 ? UserRole.admin : UserRole.superAdmin,
+      role: Math.random() > 0.8 ? UserRole.superAdmin : UserRole.admin,
       status: Math.random() > 0.8 ? UserStatus.inactive : UserStatus.active,
       createdAt: new Date().toString()
     })

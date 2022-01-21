@@ -57,8 +57,8 @@ export function tableOnChangeAdapter(fn: OnChangeAdapterCallback) {
     }
 
     Object.keys(filters).forEach(key => {
-      let value = filters[key]?.[0]
-      params[key] = value
+      let value = filters[key]
+      params[key] = value && value.length > 0 ? value.join(',') : undefined
     })
 
     fn(params)
@@ -75,8 +75,8 @@ export function pageableTableColumnsAdapter<T>(
     let { sortBy } = params
     let filterValue = params[newColumn.name]
 
-    if (filterValue) {
-      newColumn.filteredValue = [filterValue]
+    if (filterValue && filterValue.toString().length > 0) {
+      newColumn.filteredValue = filterValue.toString().split(',')
     } else {
       newColumn.filteredValue = []
     }
