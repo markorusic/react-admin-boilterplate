@@ -3,7 +3,6 @@ import { Page, ID } from '@core/types'
 import { UserRequest, UserResponse, UserMutationRequest } from './types'
 
 let fetchPage = async (params: UserRequest): Promise<Page<UserResponse>> => {
-  console.log('fetchParams.params', params)
   let { data } = await http.get<Page<UserResponse>>('/api/users', { params })
   return data
 }
