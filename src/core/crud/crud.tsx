@@ -10,13 +10,13 @@ import { CrudProps } from './types'
 import { CrudMessages } from '.'
 import { checkAccess, useAuth } from '../auth'
 
-let CrudTableContext = createContext<PageableTableProps<any, any> | null>(null)
-export let useCrudTable = <T, K>() => {
+let CrudTableContext = createContext<unknown>(null)
+export function useCrudTable<T, K>() {
   return useContext(CrudTableContext) as PageableTableProps<T, K>
 }
 
-let CrudActiveRecordContext = createContext<UseQueryResult<any> | null>(null)
-export let useCrudActiveRecord = <T,>() => {
+let CrudActiveRecordContext = createContext<unknown>(null)
+export function useCrudActiveRecord<T>() {
   return useContext(CrudActiveRecordContext) as UseQueryResult<T>
 }
 

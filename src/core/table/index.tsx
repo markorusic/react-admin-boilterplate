@@ -1,4 +1,5 @@
 export * from './table'
 export * from './pageable-table'
 export * from './table-adapters'
-export * from './use-text-filter-column'
+export * from './text-filter-column'
+export * from './date-range-filter-column'

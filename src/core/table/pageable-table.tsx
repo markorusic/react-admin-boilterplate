@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import { useQuery, UseQueryResult } from 'react-query'
 import { notification, TableProps as BaseTableProps } from 'antd'
 import { Page, PageRequest } from '../types'
@@ -75,13 +75,20 @@ export let usePageableTable = <PageItem, FetchParams extends PageRequest>({
   }
 }
 
+let PageableTableContext = createContext<unknown>(null)
+export function useTableContext<T = any, K = any>() {
+  return useContext(PageableTableContext) as PageableTableProps<T, K>
+}
+
 export function PageableTable<T, K extends PageRequest>(
   props: PageableTableProps<T, K>
 ) {
   return (
-    <Table
-      {...props}
-      columns={pageableTableColumnsAdapter(props.queryParams, props.columns)}
-    />
+    <PageableTableContext.Provider value={props}>
+      <Table
+        {...props}
+        columns={pageableTableColumnsAdapter(props.queryParams, props.columns)}
+      />
+    </PageableTableContext.Provider>
   )
 }

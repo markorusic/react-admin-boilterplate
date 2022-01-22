@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { UserRole } from '../../core/auth'
-import { PageRequest, ID, Identifiable, Sortable } from '../../core/types'
+import { ID, Record, Sortable, RecordSearch } from '../../core/types'
 import { zMessage } from '../../core/validation'
 
 export enum UserStatus {
@@ -10,22 +10,20 @@ export enum UserStatus {
 
 type SortableUserFields = 'id' | 'name' | 'email' | 'createdAt'
 
-export type UserRequest = PageRequest &
+export type UserRequest = RecordSearch &
   Sortable<SortableUserFields> & {
     id?: ID
     name?: string
     email?: string
     role?: UserRole
     status?: UserStatus
-    createdAt?: string
   }
 
-export type UserResponse = Identifiable & {
+export type UserResponse = Record & {
   name: string
   email: string
   role: UserRole
   status: UserStatus
-  createdAt: string
 }
 
 export let UserMutationRequest = z.object({

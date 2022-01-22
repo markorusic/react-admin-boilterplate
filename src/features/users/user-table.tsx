@@ -1,8 +1,9 @@
-import { Tag } from 'antd'
 import React from 'react'
+import { Tag } from 'antd'
 import { UserRole } from '../../core/auth'
 import {
-  useTextFilterColumn,
+  dateRangeFilterColumn,
+  textFilterColumn,
   PageableTableProps,
   PageableTable
 } from '../../core/table'
@@ -26,18 +27,18 @@ export let UserTable = (props: UserTableProps) => {
     <PageableTable
       {...props}
       columns={[
-        useTextFilterColumn({
+        textFilterColumn({
           name: 'id',
           title: 'common.id',
           sorter: true,
           width: 100
         }),
-        useTextFilterColumn({
+        textFilterColumn({
           name: 'name',
           title: 'common.name',
           sorter: true
         }),
-        useTextFilterColumn({
+        textFilterColumn({
           name: 'email',
           title: 'common.email',
           sorter: true
@@ -46,7 +47,6 @@ export let UserTable = (props: UserTableProps) => {
           name: 'role',
           title: 'common.role',
           sorter: true,
-          // filterSearch: true,
           filterMultiple: false,
           filters: Object.values(UserRole).map(value => ({
             value,
@@ -69,12 +69,12 @@ export let UserTable = (props: UserTableProps) => {
             <Tag color={userStatusColor[user.status]}>{user.status}</Tag>
           )
         },
-        {
+        dateRangeFilterColumn({
           name: 'createdAt',
           title: 'common.createdAt',
           sorter: true,
           render: formatDate
-        }
+        })
       ]}
     />
   )

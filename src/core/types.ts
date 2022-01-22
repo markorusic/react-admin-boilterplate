@@ -12,10 +12,27 @@ export type Page<T> = {
   pageCount: number
 }
 
-export type SortBy<T extends string = string> = `${T},${'desc' | 'asc'}`
+export type Record = Identifiable & {
+  createdAt: string
+  updatedAt: string
+}
+
+export type RecordSearch = PageRequest &
+  Partial<Comparable<'createdAt' | 'updatedAt'>>
 
 export type Sortable<T extends string = string> = {
-  sortBy: SortBy<T>
+  sortBy: `${T},${'desc' | 'asc'}`
+}
+
+export enum ComparisonOperator {
+  gt = 'gt',
+  lt = 'lt',
+  gte = 'gte',
+  lte = 'lte'
+}
+
+export type Comparable<T extends string = string> = {
+  [key in `${T}_${ComparisonOperator}`]: string
 }
 
 export type ErrorResponse = {
