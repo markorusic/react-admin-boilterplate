@@ -1,6 +1,6 @@
 import { Button, Descriptions } from 'antd'
-import { useAuth } from '../core/auth'
-import { useLang, LangSwitch } from '../core/localization'
+import { useAuth } from '@core/auth'
+import { useLang, LangSwitch } from '@core/localization'
 
 export let Settings = () => {
   let { t } = useLang()

@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import { QueryProvider } from './core/query-provider'
-import { LangProvider } from './core/localization'
-import { AuthProvider } from './core/auth'
+import { QueryProvider } from '@core/query-provider'
+import { LangProvider } from '@core/localization'
+import { AuthProvider } from '@core/auth'
 import { App } from './app'
 import { auth } from './services/auth'
 

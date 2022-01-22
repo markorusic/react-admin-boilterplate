@@ -1,6 +1,6 @@
 import { rest } from 'msw'
-import { UserRole } from '../../core/auth'
-import { createPage } from '../../core/utils/create-page'
+import { UserRole } from '@core/auth'
+import { createPage } from '@core/utils/create-page'
 import { UserResponse, UserStatus } from './types'
 
 let usersDataFactory = () => {
@@ -14,7 +14,8 @@ let usersDataFactory = () => {
       email: `user${id}@gmail.com`,
       role: Math.random() > 0.8 ? UserRole.superAdmin : UserRole.admin,
       status: Math.random() > 0.8 ? UserStatus.inactive : UserStatus.active,
-      createdAt: new Date().toString()
+      createdAt: new Date().toString(),
+      updatedAt: new Date().toString()
     })
   }
 

@@ -1,5 +1,5 @@
-import { http } from '../../core/http-client'
-import { Page, ID } from '../../core/types'
+import { http } from '@core/http-client'
+import { Page, ID } from '@core/types'
 import { UserRequest, UserResponse, UserMutationRequest } from './types'
 
 let fetchPage = async (params: UserRequest): Promise<Page<UserResponse>> => {

@@ -1,9 +1,9 @@
 import { Routes } from 'react-router-dom'
 import { HomeOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons'
-import { navigationRoutes } from './core/navigation'
-import { useLang } from './core/localization'
-import { Settings } from './features/settings'
-import { UsersPage } from './features/users/users-page'
+import { navigationRoutes } from '@core/navigation'
+import { useLang } from '@core/localization'
+import { Settings } from '@features/settings'
+import { UsersPage } from '@features/users/users-page'
 
 export let App = () => {
   return (

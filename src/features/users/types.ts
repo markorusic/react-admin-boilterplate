@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { UserRole } from '../../core/auth'
-import { ID, Record, Sortable, RecordSearch } from '../../core/types'
-import { zMessage } from '../../core/validation'
+import { UserRole } from '@core/auth'
+import { ID, Record, Sortable, RecordSearch } from '@core/types'
+import { zMessage } from '@core/validation'
 
 export enum UserStatus {
   active = 'active',

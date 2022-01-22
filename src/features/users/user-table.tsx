@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tag } from 'antd'
-import { UserRole } from '../../core/auth'
+import { UserRole } from '@core/auth'
 import {
   dateRangeFilterColumn,
   textFilterColumn,

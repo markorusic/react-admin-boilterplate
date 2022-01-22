@@ -1,11 +1,11 @@
-import { UserRole } from '../../core/auth'
+import { UserRole } from '@core/auth'
 import {
   CreateFormProps,
   Form,
   RadioInput,
   SubmitButton,
   TextInput
-} from '../../core/form'
+} from '@core/form'
 import { UserMutationRequest, UserStatus } from './types'
 
 export type UserCreateFormProps = CreateFormProps<UserMutationRequest>
