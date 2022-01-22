@@ -3,10 +3,11 @@ import { BrowserRouter } from 'react-router-dom'
 import { QueryProvider } from './core/query-provider'
 import { LangProvider } from './core/localization'
 import { AuthProvider } from './core/auth'
+import { App } from './app'
+import { auth } from './services/auth'
 
 import 'antd/dist/antd.min.css'
 import './index.css'
-import { App } from './app'
 
 if (process.env.NODE_ENV === 'development') {
   let module = import.meta.globEager('./mocks/browser.ts')['./mocks/browser.ts']
@@ -18,7 +19,7 @@ ReactDOM.render(
   <BrowserRouter>
     <QueryProvider>
       <LangProvider>
-        <AuthProvider>
+        <AuthProvider auth={auth}>
           <App />
         </AuthProvider>
       </LangProvider>

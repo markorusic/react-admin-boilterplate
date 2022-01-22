@@ -1,6 +1,5 @@
 import React, { createContext, FC, useContext } from 'react'
 import { useStoredState } from '../utils/use-stored-state'
-import { http } from '../http-client'
 import { ID } from '../types'
 
 export enum UserRole {
@@ -23,14 +22,19 @@ type AuthContextValue = {
 }
 let AuthContext = createContext<AuthContextValue | null>(null)
 
-export let AuthProvider: FC = ({ children }) => {
+export type AuthFn = (credentials: any) => Promise<User>
+export type AuthProviderProps = {
+  auth: AuthFn
+}
+
+export let AuthProvider: FC<AuthProviderProps> = ({ auth, children }) => {
   let [user, setUser] = useStoredState<User | undefined>('user', undefined)
 
   let value: AuthContextValue = {
     user,
     logout: () => setUser(undefined),
     login: async credentials => {
-      let { data } = await http.post<User>('/api/login', credentials)
+      let data = await auth(credentials)
       setUser(data)
     }
   }
