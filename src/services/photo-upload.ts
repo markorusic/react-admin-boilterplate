@@ -1,5 +1,5 @@
-import { UploadFn } from '@core/form/photo-input'
-import { http } from '@core/http-client'
+import { UploadFn } from '@/core/form/photo-input'
+import { http } from '@/core/http-client'
 
 export let uploadFile: UploadFn = async file => {
   let formData = new FormData()

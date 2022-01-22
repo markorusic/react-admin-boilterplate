@@ -1,5 +1,5 @@
 import { rest } from 'msw'
-import { User, UserRole } from '@core/auth'
+import { User, UserRole } from '@/core/auth'
 
 export let authHandlers = [
   rest.post('/api/login', (_, res, ctx) => {

@@ -1,4 +1,4 @@
-import { Crud } from '@core/crud'
+import { Crud } from '@/core/crud'
 import { UserCreateForm } from './user-create-form'
 import { UserTable } from './user-table'
 import { UserUpdateForm } from './user-update-form'

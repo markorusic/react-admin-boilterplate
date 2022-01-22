@@ -1,7 +1,7 @@
 import { rest } from 'msw'
-import { UserRole } from '@core/auth'
-import { createPage } from '@core/utils/create-page'
-import { UserResponse, UserStatus } from '@features/users/types'
+import { UserRole } from '@/core/auth'
+import { createPage } from '@/core/utils/create-page'
+import { UserResponse, UserStatus } from '@/features/users/types'
 
 let usersDataFactory = () => {
   let total = 100

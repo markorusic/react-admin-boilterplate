@@ -6,6 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "typecheck": "tsc -b",
     "gen:i18:keys": "ts-node --project scripts/tsconfig.json scripts/generate-translation-types.ts"
   },
   "dependencies": {
