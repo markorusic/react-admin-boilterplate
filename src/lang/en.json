@@ -23,6 +23,11 @@
   "common.confirmModalClose": "Are you sure that you want to close modal?",
   "common.searchTerm": "Search term",
   "common.actions": "Actions",
+  "common.validations.notSupportedFileType": "File ytpe not supported",
+  "common.validations.maxFileSize": "Max file size exceded",
+  "common.imageUploadError": "An error  occured while uploading photo",
+  "common.validations.invalidResolution": "Bad photo orientation",
+  "common.imageUploadSuccess": "Photo successfuly uploaded",
 
   "auth.login": "Login",
   "auth.logout": "Logout",

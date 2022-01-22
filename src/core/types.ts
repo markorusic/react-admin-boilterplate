@@ -21,7 +21,7 @@ export type RecordSearch = PageRequest &
   Partial<Comparable<'createdAt' | 'updatedAt'>>
 
 export type Sortable<T extends string = string> = {
-  sortBy: `${T},${'desc' | 'asc'}`
+  sortBy?: `${T},${'desc' | 'asc'}`
 }
 
 export enum ComparisonOperator {

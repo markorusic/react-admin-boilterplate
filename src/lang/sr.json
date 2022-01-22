@@ -23,6 +23,11 @@
   "common.confirmModalClose": "Da li ste sigurni da zelite da zatvorite ovaj prozor?",
   "common.searchTerm": "Termin za pretragu",
   "common.actions": "Akcije",
+  "commons.validations.notSupportedFileType": "File ytpe not supported",
+  "commons.validations.maxFileSize": "Max file size exceded",
+  "commons.imageUploadError": "An error  occured while uploading photo",
+  "commons.validations.invalidResolution": "Bad photo orientation",
+  "commons.imageUploadSuccess": "Photo successfuly uploaded",
 
   "auth.login": "Prijavi se",
   "auth.logout": "Odjavi se",
