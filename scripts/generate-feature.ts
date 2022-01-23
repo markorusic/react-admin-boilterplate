@@ -348,7 +348,7 @@ async function main() {
     selectedFeatureKeys.forEach(key => {
       let path = paths[key]
       let template = templates[key]
-      createFile(path, template())
+      createFile(path, template)
     })
   } catch (error) {
     console.error('An error occured', error)
