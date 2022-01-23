@@ -82,7 +82,7 @@ let PageLayout: FC<LayoutProps> = ({ navigationItems = [] }) => {
   let location = useLocation()
   let { t } = useLang()
   let { user, logout } = useAuth()
-  let [collapsed, setCollapsed] = useStoredState('sider-collapsed', false)
+  let [collapsed, setCollapsed] = useStoredState('sider-collapsed', true)
 
   function renderMenuItem(item: ChildNavigationItem) {
     return (
