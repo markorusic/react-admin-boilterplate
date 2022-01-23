@@ -35,7 +35,7 @@ export let useLang = () => {
   return {
     lang,
     t(key: TranslationKeys) {
-      return langs?.[lang]?.[key]
+      return langs?.[lang]?.[key] ?? key
     }
   }
 }

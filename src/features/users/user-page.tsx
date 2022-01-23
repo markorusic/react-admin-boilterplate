@@ -4,10 +4,10 @@ import { UserTable } from './user-table'
 import { UserUpdateForm } from './user-update-form'
 import { userService } from './user-service'
 
-export let UsersPage = () => {
+export let UserPage = () => {
   return (
     <Crud
-      name="users-crud"
+      name="user-crud"
       entityService={userService}
       initialFetchParams={{ sortBy: 'createdAt,desc' }}
       renderTable={props => <UserTable {...props} />}

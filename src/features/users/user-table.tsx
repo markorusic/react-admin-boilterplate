@@ -9,7 +9,7 @@ import {
   TableColumn
 } from '../../core/table'
 import { formatDate } from '../../core/utils/date'
-import { UserRequest, UserResponse, UserStatus } from './types'
+import { UserRequest, UserResponse, UserStatus } from './user-types'
 
 export type UserTableProps = PageableTableProps<UserResponse, UserRequest>
 

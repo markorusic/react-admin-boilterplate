@@ -1,9 +1,10 @@
+import React from 'react'
 import { Routes } from 'react-router-dom'
 import { HomeOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons'
 import { navigationRoutes } from '@/core/navigation'
 import { useLang } from '@/core/localization'
 import { Settings } from '@/features/settings'
-import { UsersPage } from '@/features/users/users-page'
+import { UserPage } from '@/features/users/user-page'
 
 export let App = () => {
   return (
@@ -19,7 +20,7 @@ export let App = () => {
           path: '/users',
           title: 'page.users',
           icon: <UserOutlined />,
-          element: <UsersPage />
+          element: <UserPage />
         },
         {
           path: '/settings',

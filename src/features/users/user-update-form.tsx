@@ -6,7 +6,7 @@ import {
   SubmitButton,
   TextInput
 } from '@/core/form'
-import { UserMutationRequest, UserStatus } from './types'
+import { UserMutationRequest, UserStatus } from './user-types'
 
 export type UserUpdateFormProps = FormProps<UserMutationRequest>
 

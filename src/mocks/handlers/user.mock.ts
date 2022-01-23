@@ -1,9 +1,9 @@
 import { rest } from 'msw'
 import { UserRole } from '@/core/auth'
 import { createPage } from '@/core/utils/create-page'
-import { UserResponse, UserStatus } from '@/features/users/types'
+import { UserResponse, UserStatus } from '@/features/users/user-types'
 
-let usersDataFactory = () => {
+let userDataFactory = () => {
   let total = 100
   let data: UserResponse[] = []
 
@@ -22,16 +22,16 @@ let usersDataFactory = () => {
   return data
 }
 
-let usersData = usersDataFactory()
+let userData = userDataFactory()
 
 export let userHandlers = [
   rest.get('/api/users', (req, res, ctx) => {
     let params = Object.fromEntries(req.url.searchParams)
-    return res(ctx.json(createPage(usersData, params)))
+    return res(ctx.json(createPage(userData, params)))
   }),
   rest.get('/api/users/:id', (req, res, ctx) => {
     let { id } = req.params
-    let user = usersData.find(user => user.id == id)
+    let user = userData.find(user => user.id == id)
     if (!user) {
       return res(ctx.status(404))
     }

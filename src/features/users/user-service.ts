@@ -1,6 +1,6 @@
 import { http } from '@/core/http-client'
 import { Page, ID } from '@/core/types'
-import { UserRequest, UserResponse, UserMutationRequest } from './types'
+import { UserRequest, UserResponse, UserMutationRequest } from './user-types'
 
 let fetchPage = async (params: UserRequest): Promise<Page<UserResponse>> => {
   let { data } = await http.get<Page<UserResponse>>('/api/users', { params })
