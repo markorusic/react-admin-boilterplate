@@ -96,8 +96,7 @@ let PageLayout: FC<LayoutProps> = ({ navigationItems = [] }) => {
   let openSubmenueKeys = visibleNavigationItems
     .filter(item => {
       if ('children' in item) {
-        let groupItem = item as GroupNavigationItem
-        return groupItem.children.some(i => i.path === location.pathname)
+        return item.children.some(child => child.path === location.pathname)
       }
       return false
     })
