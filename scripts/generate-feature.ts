@@ -56,7 +56,7 @@ type TemplateFactoryOptions = {
   name: string
   prettierOptions?: prettier.Options | undefined
 }
-type Template = Record<FeatureItemKey, () => string>
+type Template = Record<FeatureItemKey, string>
 
 function templateFactory({
   name,
@@ -71,8 +71,7 @@ function templateFactory({
     })
   }
 
-  function type() {
-    return format(`
+  let type = format(`
         import { z } from 'zod'
         import { ID, Record, Sortable, RecordSearch } from '@/core/types'
         import { zMessage } from '@/core/validation'
@@ -96,10 +95,8 @@ function templateFactory({
 
         export type ${capitalizedName}MutationRequest = z.infer<typeof ${capitalizedName}MutationRequest>
     `)
-  }
 
-  function service() {
-    return format(`
+  let service = format(`
       import { http } from '@/core/http-client'
       import { Page, ID } from '@/core/types'
       import { ${capitalizedName}Request, ${capitalizedName}Response, ${capitalizedName}MutationRequest } from './${name}-types'
@@ -131,10 +128,8 @@ function templateFactory({
         fetchById
       }   
     `)
-  }
 
-  function createForm() {
-    return format(`
+  let createForm = format(`
         import {
           CreateFormProps,
           Form,
@@ -158,10 +153,8 @@ function templateFactory({
           )
         }    
     `)
-  }
 
-  function updateForm() {
-    return format(`
+  let updateForm = format(`
         import {
           Form,
           FormProps,
@@ -181,10 +174,8 @@ function templateFactory({
           )
         }    
     `)
-  }
 
-  function table() {
-    return format(`
+  let table = format(`
       import {
         dateRangeFilterColumn,
         textFilterColumn,
@@ -222,10 +213,8 @@ function templateFactory({
       }
     
     `)
-  }
 
-  function page() {
-    return format(`
+  let page = format(`
         import { Crud } from '@/core/crud'
         import { ${capitalizedName}CreateForm } from './${name}-create-form'
         import { ${capitalizedName}Table } from './${name}-table'
@@ -248,10 +237,8 @@ function templateFactory({
         }
 
     `)
-  }
 
-  function mswMock() {
-    return format(`
+  let mswMock = format(`
       import { rest } from 'msw'
       import { createPage } from '@/core/utils/create-page'
       import { ${capitalizedName}Response } from '@/features/${name}/${name}-types'
@@ -295,7 +282,6 @@ function templateFactory({
         })
       ]    
     `)
-  }
 
   return { type, service, createForm, updateForm, table, page, mswMock }
 }
