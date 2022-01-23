@@ -1,13 +1,14 @@
 import React, { FC, ReactNode } from 'react'
 import { Link, Outlet, Route, useLocation } from 'react-router-dom'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { Menu, PageHeader } from 'antd'
+import { Button, Layout, Menu, PageHeader } from 'antd'
 import { Login, RequireAuth, useAuth, UserRole } from './auth'
-import { TranslationKeys, useLang } from './localization'
+import { t, TranslationKeys, useLang } from './localization'
 import { checkAccess } from './auth/require-role'
 import { HeadTitle } from './utils/head-title'
+import { useStoredState } from './utils/use-stored-state'
 
-export type NavigationItem = {
+export type ChildNavigationItem = {
   title: TranslationKeys
   path: string
   element: ReactNode
@@ -16,7 +17,27 @@ export type NavigationItem = {
   role?: UserRole
 }
 
-export let navigationRoutes = (navigationItems: NavigationItem[]) => {
+export type GroupNavigationItem = Omit<
+  ChildNavigationItem,
+  'element' | 'path'
+> & {
+  children: ChildNavigationItem[]
+}
+
+type NavigationItem = ChildNavigationItem | GroupNavigationItem
+
+function renderNavigationItem(item: ChildNavigationItem) {
+  return (
+    <Route
+      key={item.path}
+      path={item.path}
+      element={<Container title={item.title}>{item.element}</Container>}
+    />
+  )
+}
+
+export function navigationRoutes(navigationItems: NavigationItem[]) {
+  let { t } = useLang()
   let { user } = useAuth()
   let accessibleNavigationItems = navigationItems.filter(item => {
     return checkAccess(user, item.role)
@@ -28,20 +49,26 @@ export let navigationRoutes = (navigationItems: NavigationItem[]) => {
       <Route
         element={
           <RequireAuth>
-            <Layout navigationItems={accessibleNavigationItems} />
+            <PageLayout navigationItems={accessibleNavigationItems} />
           </RequireAuth>
         }
       >
         {accessibleNavigationItems.map(item => {
-          return (
-            <Route
-              key={item.path}
-              path={item.path}
-              element={<Container title={item.title}>{item.element}</Container>}
-            />
-          )
+          if ('children' in item) {
+            return item.children.map(renderNavigationItem)
+          }
+          return renderNavigationItem(item)
         })}
-        <Route path="*" element={<Container title="page.notfound" />} />
+        <Route
+          path="*"
+          element={
+            <Container title="page.notfound">
+              <Button type="primary">
+                <Link to="/">{t('notfound.backToHome')}</Link>
+              </Button>
+            </Container>
+          }
+        />
       </Route>
     </>
   )
@@ -51,37 +78,73 @@ type LayoutProps = {
   navigationItems?: NavigationItem[]
 }
 
-let Layout: FC<LayoutProps> = ({ navigationItems = [] }) => {
+let PageLayout: FC<LayoutProps> = ({ navigationItems = [] }) => {
   let location = useLocation()
   let { t } = useLang()
   let { user, logout } = useAuth()
+  let [collapsed, setCollapsed] = useStoredState('sider-collapsed', false)
+
+  function renderMenuItem(item: ChildNavigationItem) {
+    return (
+      <Menu.Item key={item.path} icon={item.icon}>
+        <Link to={item.path}>{t(item.title)}</Link>
+      </Menu.Item>
+    )
+  }
 
   let visibleNavigationItems = navigationItems.filter(item => !item.hidden)
+  let openSubmenueKeys = visibleNavigationItems
+    .filter(item => {
+      if ('children' in item) {
+        let groupItem = item as GroupNavigationItem
+        return groupItem.children.some(i => i.path === location.pathname)
+      }
+      return false
+    })
+    .map(item => item.title)
 
   return (
-    <main style={{ maxWidth: 1440, margin: '0 auto' }}>
-      <Menu
-        mode="horizontal"
-        style={{ display: 'flex', justifyContent: 'flex-end' }}
+    <Layout style={{ minHeight: '100vh' }}>
+      <Layout.Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={setCollapsed}
+        theme="light"
       >
-        <Menu.SubMenu key="user" icon={<UserOutlined />} title={user?.name}>
-          <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={logout}>
-            {t('auth.logout')}
-          </Menu.Item>
-        </Menu.SubMenu>
-      </Menu>
-
-      <div style={{ display: 'flex' }}>
-        <Menu selectedKeys={[location.pathname]} style={{ minWidth: 200 }}>
-          {visibleNavigationItems.map(item => (
-            <Menu.Item key={item.path} icon={item.icon}>
-              <Link to={item.path}>{t(item.title)}</Link>
+        <Menu
+          theme="light"
+          mode="inline"
+          selectedKeys={[location.pathname]}
+          defaultOpenKeys={openSubmenueKeys}
+        >
+          <Menu.SubMenu key="user" icon={<UserOutlined />} title={user?.name}>
+            <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={logout}>
+              {t('auth.logout')}
             </Menu.Item>
-          ))}
+          </Menu.SubMenu>
+
+          <Menu.Divider />
+
+          {visibleNavigationItems.map(item => {
+            if ('children' in item) {
+              return (
+                <Menu.SubMenu
+                  key={item.title}
+                  icon={item.icon}
+                  title={t(item.title)}
+                >
+                  {item.children.map(renderMenuItem)}
+                </Menu.SubMenu>
+              )
+            }
+            return renderMenuItem(item)
+          })}
         </Menu>
+      </Layout.Sider>
+      <Layout.Content>
         <Outlet />
-      </div>
-    </main>
+      </Layout.Content>
+    </Layout>
   )
 }
 
@@ -99,7 +162,16 @@ let Container: FC<ContainerProps> = ({ title, children }) => {
         title={t(title)}
         onBack={() => window.history.back()}
       />
-      <div style={{ paddingTop: 8 }}>{children}</div>
+      <div
+        style={{
+          backgroundColor: 'white',
+          borderRadius: 4,
+          marginTop: 8,
+          padding: 16
+        }}
+      >
+        {children}
+      </div>
     </div>
   )
 }

@@ -30,11 +30,12 @@
   "auth.login": "Login",
   "auth.logout": "Logout",
 
-  "page.notfound": "Not Found",
+  "page.notfound": "404 - Not Found",
   "page.settings": "Settings",
   "page.home": "Home",
   "page.users": "Users",
 
+  "notfound.backToHome": "Back To Home",
   "login.title": "Dashboard | Login",
 
   "settings.lang": "Language",

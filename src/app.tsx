@@ -6,7 +6,7 @@ import { useLang } from '@/core/localization'
 import { Settings } from '@/features/settings'
 import { UserPage } from '@/features/users/user-page'
 
-export let App = () => {
+export function App() {
   return (
     <Routes>
       {navigationRoutes([

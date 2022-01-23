@@ -30,11 +30,12 @@
   "auth.login": "Prijavi se",
   "auth.logout": "Odjavi se",
 
-  "page.notfound": "Nije pronadjeno",
+  "page.notfound": "404 - Nije pronadjeno",
   "page.settings": "Podešavanja",
   "page.home": "Početna",
   "page.users": "Korisnici",
 
+  "notfound.backToHome": "Nazad na pocetnu",
   "login.title": "Komandna tabla | Prijava",
 
   "settings.lang": "Jezik",

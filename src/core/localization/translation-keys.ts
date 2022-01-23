@@ -32,6 +32,7 @@ export type TranslationKeys =
 	| "page.settings"
 	| "page.home"
 	| "page.users"
+	| "notfound.backToHome"
 	| "login.title"
 	| "settings.lang"
 	| "settings.setLang"
