@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "typecheck": "tsc -b",
     "gen:feature": "ts-node --project scripts/tsconfig.json scripts/generate-feature.ts",
-    "gen:i18:keys": "ts-node --project scripts/tsconfig.json scripts/generate-translation-types.ts"
+    "gen:trans-types": "ts-node --project scripts/tsconfig.json scripts/generate-translation-types.ts"
   },
   "dependencies": {
     "antd": "^4.18.3",
