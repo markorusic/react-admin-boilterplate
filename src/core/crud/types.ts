@@ -48,6 +48,7 @@ export type CrudProps<
     UpdateDto,
     FetchPageParams
   >
+  layout?: 'modal' | 'split'
   messages?: CrudMessages
   accessRoles?: CrudAccessRoles
   initialFetchParams?: FetchPageParams

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, FC, useContext, useState } from 'react'
 import { Button } from 'antd'
 import { PlusCircleOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useQuery, UseQueryResult } from 'react-query'
@@ -10,14 +10,27 @@ import { CrudProps } from './types'
 import { CrudMessages } from '.'
 import { checkAccess, useAuth } from '../auth'
 
-let CrudTableContext = createContext<unknown>(null)
-export function useCrudTable<T, K>() {
-  return useContext(CrudTableContext) as PageableTableProps<T, K>
-}
-
-let CrudActiveRecordContext = createContext<unknown>(null)
-export function useCrudActiveRecord<T>() {
-  return useContext(CrudActiveRecordContext) as UseQueryResult<T>
+export function Crud<
+  PageItemDto extends Identifiable,
+  ItemDto,
+  CreateDto,
+  UpdateDto = CreateDto & Identifiable,
+  FetchPageParams extends PageRequest = PageRequest
+>(
+  props: CrudProps<PageItemDto, ItemDto, CreateDto, UpdateDto, FetchPageParams>
+) {
+  let crud = useCrud(props)
+  return (
+    <CrudTableContext.Provider value={crud.table}>
+      <CrudActiveRecordContext.Provider value={crud.activeRecordQuery}>
+        {props.layout === 'modal' ? (
+          <CrudModalLayout {...(crud as any)} />
+        ) : (
+          <CrudSplitLayout {...(crud as any)} />
+        )}
+      </CrudActiveRecordContext.Provider>
+    </CrudTableContext.Provider>
+  )
 }
 
 let nullRender = () => null
@@ -26,7 +39,7 @@ let defaultMessages: CrudMessages = {
   updateTitle: 'common.update'
 }
 
-export function Crud<
+export function useCrud<
   PageItemDto extends Identifiable,
   ItemDto,
   CreateDto,
@@ -52,6 +65,7 @@ export function Crud<
 
   let [activeRecordId, setActiveRecordId] = useState<ID>()
   let activeRecordQuery = useQuery({
+    keepPreviousData: true,
     enabled: activeRecordId !== undefined,
     queryKey: [name, 'active-record', activeRecordId],
     queryFn: () => entityService.fetchById(activeRecordId as ID)
@@ -63,93 +77,212 @@ export function Crud<
   let enableUpdate =
     renderUpdateForm !== nullRender && checkAccess(user, accessRoles.updateRole)
 
+  return {
+    activeRecordId,
+    setActiveRecordId,
+    entityService,
+    messages,
+    table,
+    activeRecordQuery,
+    enableCreate,
+    enableUpdate,
+    renderCreateForm,
+    renderUpdateForm,
+    renderHeader,
+    renderTable
+  }
+}
+
+let CrudTableContext = createContext<unknown>(null)
+export function useCrudTable<T, K>() {
+  return useContext(CrudTableContext) as PageableTableProps<T, K>
+}
+
+let CrudActiveRecordContext = createContext<unknown>(null)
+export function useCrudActiveRecord<T>() {
+  return useContext(CrudActiveRecordContext) as UseQueryResult<T>
+}
+
+export function CrudSplitLayout(props: ReturnType<typeof useCrud>) {
   return (
-    <CrudTableContext.Provider value={table}>
-      <CrudActiveRecordContext.Provider value={activeRecordQuery}>
-        <div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginBottom: 8
-            }}
-          >
-            <div style={{ display: 'flex', flex: 1 }}>
-              {enableCreate ? (
-                <ButtonModal
-                  title={messages.createTitle ?? defaultMessages.createTitle}
-                  buttonProps={{
-                    type: 'primary',
-                    icon: <PlusCircleOutlined />
-                  }}
-                  modalProps={{ width: 900, destroyOnClose: true }}
-                >
-                  {modal =>
-                    renderCreateForm({
-                      successMessage: 'common.successfullyExecuted',
-                      async onSubmit(values) {
-                        await entityService.create(values as CreateDto)
-                        table.query.refetch()
-                        modal.close()
-                      }
-                    })
-                  }
-                </ButtonModal>
-              ) : null}
-
-              {renderHeader !== nullRender ? (
-                <div>{renderHeader(table)}</div>
-              ) : null}
-            </div>
-
-            <Button
-              type="ghost"
-              shape="circle"
-              icon={<ReloadOutlined />}
-              loading={table.query.isLoading}
-              onClick={() => table.query.refetch()}
-            />
-          </div>
-
-          <div className="py-8">
-            {renderTable({
-              ...table,
-              ...(enableUpdate
-                ? {
-                    rowClassName: 'clickable',
-                    onRow: record => ({
-                      onClick() {
-                        setActiveRecordId(record.id)
-                      }
-                    })
-                  }
-                : {})
-            })}
-          </div>
-
-          {enableUpdate && (
-            <Modal
-              width={900}
-              on={activeRecordId !== undefined}
-              close={() => setActiveRecordId(undefined)}
+    <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: 8
+        }}
+      >
+        <div style={{ display: 'flex', flex: 1 }}>
+          {props.enableCreate ? (
+            <ButtonModal
+              title={props.messages.createTitle ?? defaultMessages.createTitle}
+              buttonProps={{
+                type: 'primary',
+                icon: <PlusCircleOutlined />
+              }}
+              modalProps={{ width: 900, destroyOnClose: true }}
             >
-              {activeRecordQuery.data ? (
-                renderUpdateForm({
+              {modal =>
+                props.renderCreateForm({
                   successMessage: 'common.successfullyExecuted',
-                  activeRecord: activeRecordQuery.data,
                   async onSubmit(values) {
-                    await entityService.update(values)
-                    activeRecordQuery.refetch()
-                    table.query.refetch()
+                    await props.entityService.create(values)
+                    props.table.query.refetch()
+                    modal.close()
+                  }
+                })
+              }
+            </ButtonModal>
+          ) : null}
+
+          {props.renderHeader !== nullRender ? (
+            <div>{props.renderHeader(props.table)}</div>
+          ) : null}
+        </div>
+
+        <Button
+          type="ghost"
+          shape="circle"
+          icon={<ReloadOutlined />}
+          loading={props.table.query.isLoading}
+          onClick={() => props.table.query.refetch()}
+        />
+      </div>
+
+      <div style={{ display: 'flex' }}>
+        <div style={{ flex: 64, marginRight: 8 }}>
+          {props.renderTable({
+            ...props.table,
+            ...(props.enableUpdate
+              ? {
+                  rowClassName: 'clickable',
+                  onRow: record => ({
+                    onClick() {
+                      props.setActiveRecordId(record.id)
+                    }
+                  })
+                }
+              : {})
+          })}
+        </div>
+
+        {props.enableUpdate && props.activeRecordId && (
+          <>
+            <div style={{ flex: 1 }} />
+            <div
+              style={{
+                flex: 35,
+                padding: 16,
+                border: '1px solid #F0F2F5',
+                borderRadius: 4
+              }}
+            >
+              {props.activeRecordQuery.data ? (
+                props.renderUpdateForm({
+                  successMessage: 'common.successfullyExecuted',
+                  activeRecord: props.activeRecordQuery.data,
+                  async onSubmit(values) {
+                    await props.entityService.update(values)
+                    props.activeRecordQuery.refetch()
+                    props.table.query.refetch()
                   }
                 })
               ) : (
-                <Spin spinning />
+                <Spin delay={200} spinning />
               )}
-            </Modal>
-          )}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export function CrudModalLayout(props: ReturnType<typeof useCrud>) {
+  return (
+    <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: 8
+        }}
+      >
+        <div style={{ display: 'flex', flex: 1 }}>
+          {props.enableCreate ? (
+            <ButtonModal
+              title={props.messages.createTitle ?? defaultMessages.createTitle}
+              buttonProps={{
+                type: 'primary',
+                icon: <PlusCircleOutlined />
+              }}
+              modalProps={{ width: 900, destroyOnClose: true }}
+            >
+              {modal =>
+                props.renderCreateForm({
+                  successMessage: 'common.successfullyExecuted',
+                  async onSubmit(values) {
+                    await props.entityService.create(values)
+                    props.table.query.refetch()
+                    modal.close()
+                  }
+                })
+              }
+            </ButtonModal>
+          ) : null}
+
+          {props.renderHeader !== nullRender ? (
+            <div>{props.renderHeader(props.table)}</div>
+          ) : null}
         </div>
-      </CrudActiveRecordContext.Provider>
-    </CrudTableContext.Provider>
+
+        <Button
+          type="ghost"
+          shape="circle"
+          icon={<ReloadOutlined />}
+          loading={props.table.query.isLoading}
+          onClick={() => props.table.query.refetch()}
+        />
+      </div>
+
+      <div className="py-8">
+        {props.renderTable({
+          ...props.table,
+          ...(props.enableUpdate
+            ? {
+                rowClassName: 'clickable',
+                onRow: record => ({
+                  onClick() {
+                    props.setActiveRecordId(record.id)
+                  }
+                })
+              }
+            : {})
+        })}
+      </div>
+
+      {props.enableUpdate && (
+        <Modal
+          width={900}
+          on={props.activeRecordId !== undefined}
+          close={() => props.setActiveRecordId(undefined)}
+        >
+          {props.activeRecordQuery.data ? (
+            props.renderUpdateForm({
+              successMessage: 'common.successfullyExecuted',
+              activeRecord: props.activeRecordQuery.data,
+              async onSubmit(values) {
+                await props.entityService.update(values)
+                props.activeRecordQuery.refetch()
+                props.table.query.refetch()
+              }
+            })
+          ) : (
+            <Spin spinning />
+          )}
+        </Modal>
+      )}
+    </div>
   )
 }
