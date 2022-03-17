@@ -1,5 +1,6 @@
+import { env } from '@/config/env'
 import axios from 'axios'
 
 export let http = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL?.toString() ?? ''
+  baseURL: env.apiBaseUrl
 })

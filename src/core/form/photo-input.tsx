@@ -28,7 +28,7 @@ export function PhotoInput({ uploadFn, ...props }: PhotoInputProps) {
             let path = await uploadFn(file)
             helpers.setValue(path)
             notification.success({ message: t('common.uploadSuccess') })
-          } catch (err) {
+          } catch (err: any) {
             notification.error({
               message: err?.response?.data?.message ?? t('common.uploadError')
             })

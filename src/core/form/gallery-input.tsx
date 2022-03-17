@@ -35,7 +35,7 @@ export const GalleryInput = ({ uploadFn, ...props }: GalleryInputProps) => {
             const path = await uploadFn(file)
             helpers.setValue([...field.value, path])
             notification.success({ message: t('common.uploadSuccess') })
-          } catch (err) {
+          } catch (err: any) {
             notification.error({
               message: err?.response?.data?.message ?? t('common.uploadError')
             })
