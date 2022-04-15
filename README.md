@@ -18,15 +18,15 @@ npm i
 ```
 
 ```sh
-npm start
-```
-
-```sh
 cat .env.example > .env.local
 ```
 
 Then update env variables in `.env.local`.
 If no `VITE_API_BASE_URL` is present msw is ran by default. Change that behaviour in `src/main.tsx` if needed.
+
+```sh
+npm start
+```
 
 ## Getting started
 
