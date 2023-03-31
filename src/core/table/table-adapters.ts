@@ -30,9 +30,9 @@ export function paginationAdapter({
     ...props,
     pageSize: pageSize ? parseInt(pageSize.toString()) : 10,
     current: current ? parseInt(current.toString()) + 1 : 1,
-    onChange: page => onChange((page - 1).toString()),
+    onChange: (page) => onChange((page - 1).toString()),
     onShowSizeChange: (page, size) =>
-      onShowSizeChange((page - 1).toString(), size.toString())
+      onShowSizeChange((page - 1).toString(), size.toString()),
   }
 }
 
@@ -43,21 +43,21 @@ export function tableOnChangeAdapter(fn: OnChangeAdapterCallback) {
   return function <T>(
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<T> | SorterResult<T>[]
+    sorter: SorterResult<T> | SorterResult<T>[],
   ) {
-    let params: Params = {
-      page: (pagination.current ?? 1) - 1
+    const params: Params = {
+      page: (pagination.current ?? 1) - 1,
     }
 
-    let { order, field } = Array.isArray(sorter) ? sorter[0] : sorter
+    const { order, field } = Array.isArray(sorter) ? sorter[0] : sorter
     if (order) {
       params.sortBy = [field, order.slice(0, -3)].join(',')
     } else {
       params.sortBy = undefined
     }
 
-    Object.keys(filters).forEach(key => {
-      let value = filters[key]
+    Object.keys(filters).forEach((key) => {
+      const value = filters[key]
       params[key] = value && value.length > 0 ? value.join(',') : undefined
     })
 
@@ -65,15 +65,15 @@ export function tableOnChangeAdapter(fn: OnChangeAdapterCallback) {
   }
 }
 
-export function pageableTableColumnsAdapter<T>(
+export function pageabconstableColumnsAdapter<T>(
   params: Params,
-  columns: TableColumn<T>[] = []
+  columns: TableColumn<T>[] = [],
 ): TableColumn<T>[] {
-  return columns.map(column => {
-    let newColumn = { ...column }
+  return columns.map((column) => {
+    const newColumn = { ...column }
 
-    let { sortBy } = params
-    let filterValue = params[newColumn.name]
+    const { sortBy } = params
+    const filterValue = params[newColumn.name]
 
     if (filterValue && filterValue.toString().length > 0) {
       newColumn.filteredValue = filterValue.toString().split(',')
@@ -82,7 +82,7 @@ export function pageableTableColumnsAdapter<T>(
     }
 
     if (newColumn.sorter && sortBy) {
-      let [columnName, order] = sortBy.toString().split(',')
+      const [columnName, order] = sortBy.toString().split(',')
       if (columnName === newColumn.name) {
         newColumn.sortOrder = order === 'desc' ? 'descend' : 'ascend'
       }

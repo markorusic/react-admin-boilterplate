@@ -3,7 +3,7 @@ import {
   Button,
   ButtonProps,
   ModalProps as BaseModalProps,
-  Modal as BaseModal
+  Modal as BaseModal,
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { TranslationKeys, useLang } from '../localization'
@@ -15,7 +15,7 @@ export type ModalInjectedProps = {
   allowImmediateClosing: VoidFunction
 }
 
-let ModalContext = React.createContext<ModalInjectedProps | null>(null)
+const ModalContext = React.createContext<ModalInjectedProps | null>(null)
 
 export type ModalProps = BaseModalProps & {
   on: boolean
@@ -23,20 +23,20 @@ export type ModalProps = BaseModalProps & {
   children: ReactNode | ((injectedProps: ModalInjectedProps) => ReactNode)
 }
 
-export let useModal = () => React.useContext(ModalContext)
+export const useModal = () => React.useContext(ModalContext)
 
-export let Modal = ({ on, close, children, ...props }: ModalProps) => {
-  let { t } = useLang()
-  let [confirmCancel, setConfirmCancel] = useState(false)
+export const Modal = ({ on, close, children, ...props }: ModalProps) => {
+  const { t } = useLang()
+  const [confirmCancel, setConfirmCancel] = useState(false)
 
-  let value: ModalInjectedProps = useMemo(
+  const value: ModalInjectedProps = useMemo(
     () => ({
       on,
       close,
       preventImmediateClosing: () => setConfirmCancel(true),
-      allowImmediateClosing: () => setConfirmCancel(false)
+      allowImmediateClosing: () => setConfirmCancel(false),
     }),
-    [on, close, setConfirmCancel]
+    [on, close, setConfirmCancel],
   )
 
   useEffect(() => {
@@ -45,21 +45,21 @@ export let Modal = ({ on, close, children, ...props }: ModalProps) => {
     }
   }, [on, setConfirmCancel])
 
-  let onCancel = (event: React.MouseEvent) => {
+  const onCancel = (event: React.MouseEvent) => {
     event.preventDefault()
     event.stopPropagation()
     if (confirmCancel) {
       BaseModal.confirm({
         title: t('common.confirmModalClose'),
-        onOk: close
+        onOk: close,
       })
     } else {
       close()
     }
   }
 
-  let afterClose = () => {
-    let otherModal: HTMLElement | null =
+  const afterClose = () => {
+    const otherModal: HTMLElement | null =
       document.querySelector('.ant-modal-wrap')
     otherModal?.focus()
   }
@@ -89,16 +89,16 @@ export interface ButtonModalProps {
   children: ModalProps['children']
 }
 
-export let ButtonModal: FC<ButtonModalProps> = ({
+export const ButtonModal: FC<ButtonModalProps> = ({
   title,
   unsafe_title,
   buttonProps,
   modalProps,
-  children
+  children,
 }) => {
-  let { t } = useLang()
-  let [on, setOn] = useState(false)
-  let displayTitle = title ? t(title) : unsafe_title
+  const { t } = useLang()
+  const [on, setOn] = useState(false)
+  const displayTitle = title ? t(title) : unsafe_title
 
   return (
     <>
@@ -120,12 +120,12 @@ export let ButtonModal: FC<ButtonModalProps> = ({
   )
 }
 
-export let createButtonModalProps: Omit<ButtonModalProps, 'children'> = {
+export const createButtonModalProps: Omit<ButtonModalProps, 'children'> = {
   title: 'common.create',
   // modalProps: { width: 1200 },
   buttonProps: {
     type: 'primary',
     shape: 'round',
-    icon: <PlusOutlined />
-  }
+    icon: <PlusOutlined />,
+  },
 } as const

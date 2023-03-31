@@ -5,20 +5,20 @@ import en from '../../lang/en.json'
 import sr from '../../lang/sr.json'
 
 export type LangSlugs = 'en' | 'sr'
-export let defaultLang: LangSlugs = 'en'
-export let langNames: Record<LangSlugs, string> = {
+export const defaultLang: LangSlugs = 'en'
+export const langNames: Record<LangSlugs, string> = {
   en: 'English',
-  sr: 'Srpski'
+  sr: 'Srpski',
 }
 
 type Languages = Record<LangSlugs, Record<TranslationKeys, string>>
-let langs: Languages = { en, sr }
+const langs: Languages = { en, sr }
 
 const LangContext = createContext<LangSlugs>(defaultLang)
 const ChangeLangContext = createContext<(slug: LangSlugs) => void>(() => {})
 
-export let LangProvider: FC = ({ children }) => {
-  let [lang, setLang] = useStoredState<LangSlugs>('lang', defaultLang)
+export const LangProvider: FC = ({ children }) => {
+  const [lang, setLang] = useStoredState<LangSlugs>('lang', defaultLang)
   return (
     <LangContext.Provider value={lang}>
       <ChangeLangContext.Provider value={setLang}>
@@ -28,16 +28,16 @@ export let LangProvider: FC = ({ children }) => {
   )
 }
 
-export let t = (key: TranslationKeys) => key
+export const t = (key: TranslationKeys) => key
 
-export let useLang = () => {
-  let lang = useContext(LangContext)
+export const useLang = () => {
+  const lang = useContext(LangContext)
   return {
     lang,
     t(key: TranslationKeys) {
       return langs?.[lang]?.[key] ?? key
-    }
+    },
   }
 }
 
-export let useChangeLang = () => useContext(ChangeLangContext)
+export const useChangeLang = () => useContext(ChangeLangContext)

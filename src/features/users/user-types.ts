@@ -5,7 +5,7 @@ import { zMessage } from '@/core/validation'
 
 export enum UserStatus {
   active = 'active',
-  inactive = 'inactive'
+  inactive = 'inactive',
 }
 
 type SortableUserFields = 'id' | 'name' | 'email' | 'createdAt'
@@ -26,12 +26,12 @@ export type UserResponse = Record & {
   status: UserStatus
 }
 
-export let UserMutationRequest = z.object({
+export const UserMutationRequest = z.object({
   id: z.number().or(z.string()).optional(),
   name: z.string(zMessage.required),
   email: z.string(zMessage.required).email(zMessage.email),
   role: z.nativeEnum(UserRole, zMessage.required),
-  status: z.nativeEnum(UserStatus, zMessage.required)
+  status: z.nativeEnum(UserStatus, zMessage.required),
 })
 
 export type UserMutationRequest = z.infer<typeof UserMutationRequest>

@@ -5,9 +5,9 @@ export type RequireRoleProps = {
   role: UserRole
 }
 
-export let checkAccess = (
+export const checkAccess = (
   user: User | undefined,
-  role: UserRole | undefined
+  role: UserRole | undefined,
 ) => {
   if (!user) {
     return false
@@ -18,9 +18,9 @@ export let checkAccess = (
   return userRoleLevels.indexOf(role) <= userRoleLevels.indexOf(user.role)
 }
 
-export let RequireRole: FC<RequireRoleProps> = ({ role, children }) => {
-  let { user } = useAuth()
-  let hasAccess = checkAccess(user, role)
+export const RequireRole: FC<RequireRoleProps> = ({ role, children }) => {
+  const { user } = useAuth()
+  const hasAccess = checkAccess(user, role)
 
   if (!hasAccess) {
     return null

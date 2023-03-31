@@ -37,9 +37,9 @@ function renderNavigationItem(item: ChildNavigationItem) {
 }
 
 export function navigationRoutes(navigationItems: NavigationItem[]) {
-  let { t } = useLang()
-  let { user } = useAuth()
-  let accessibleNavigationItems = navigationItems.filter(item => {
+  const { t } = useLang()
+  const { user } = useAuth()
+  const accessibleNavigationItems = navigationItems.filter((item) => {
     return checkAccess(user, item.role)
   })
 
@@ -53,7 +53,7 @@ export function navigationRoutes(navigationItems: NavigationItem[]) {
           </RequireAuth>
         }
       >
-        {accessibleNavigationItems.map(item => {
+        {accessibleNavigationItems.map((item) => {
           if ('children' in item) {
             return item.children.map(renderNavigationItem)
           }
@@ -78,11 +78,11 @@ type LayoutProps = {
   navigationItems?: NavigationItem[]
 }
 
-let PageLayout: FC<LayoutProps> = ({ navigationItems = [] }) => {
-  let location = useLocation()
-  let { t } = useLang()
-  let { user, logout } = useAuth()
-  let [collapsed, setCollapsed] = useStoredState('sider-collapsed', true)
+const PageLayout: FC<LayoutProps> = ({ navigationItems = [] }) => {
+  const location = useLocation()
+  const { t } = useLang()
+  const { user, logout } = useAuth()
+  const [collapsed, setCollapsed] = useStoredState('sider-collapsed', true)
 
   function renderMenuItem(item: ChildNavigationItem) {
     return (
@@ -92,15 +92,15 @@ let PageLayout: FC<LayoutProps> = ({ navigationItems = [] }) => {
     )
   }
 
-  let visibleNavigationItems = navigationItems.filter(item => !item.hidden)
-  let openSubmenueKeys = visibleNavigationItems
-    .filter(item => {
+  const visibleNavigationItems = navigationItems.filter((item) => !item.hidden)
+  const openSubmenueKeys = visibleNavigationItems
+    .filter((item) => {
       if ('children' in item) {
-        return item.children.some(child => child.path === location.pathname)
+        return item.children.some((child) => child.path === location.pathname)
       }
       return false
     })
-    .map(item => item.title)
+    .map((item) => item.title)
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -124,7 +124,7 @@ let PageLayout: FC<LayoutProps> = ({ navigationItems = [] }) => {
 
           <Menu.Divider />
 
-          {visibleNavigationItems.map(item => {
+          {visibleNavigationItems.map((item) => {
             if ('children' in item) {
               return (
                 <Menu.SubMenu
@@ -151,8 +151,8 @@ type ContainerProps = {
   title: TranslationKeys
 }
 
-let Container: FC<ContainerProps> = ({ title, children }) => {
-  let { t } = useLang()
+const Container: FC<ContainerProps> = ({ title, children }) => {
+  const { t } = useLang()
   return (
     <div style={{ width: '100%', padding: 16, position: 'relative' }}>
       <HeadTitle title={title} />
@@ -166,7 +166,7 @@ let Container: FC<ContainerProps> = ({ title, children }) => {
           backgroundColor: 'white',
           borderRadius: 4,
           marginTop: 8,
-          padding: 16
+          padding: 16,
         }}
       >
         {children}

@@ -6,17 +6,17 @@ import { Form, TextInput, SubmitButton } from '../form'
 import { HeadTitle } from '../utils/head-title'
 import { zMessage } from '../validation'
 
-let Credentials = z.object({
+const Credentials = z.object({
   username: z.string(zMessage.required),
-  password: z.string(zMessage.required)
+  password: z.string(zMessage.required),
 })
 
-export let Login = () => {
-  let { t } = useLang()
-  let { user, login } = useAuth()
-  let location = useLocation()
+export const Login = () => {
+  const { t } = useLang()
+  const { user, login } = useAuth()
+  const location = useLocation()
 
-  let from =
+  const from =
     (location.state as { from: Location } | undefined)?.from?.pathname || '/'
 
   if (user) {

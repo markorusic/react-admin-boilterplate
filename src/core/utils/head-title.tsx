@@ -6,9 +6,9 @@ export type HeadTitleProps = {
   unsafe_title?: string
 }
 
-export let HeadTitle = ({ title, unsafe_title }: HeadTitleProps) => {
-  let { t } = useLang()
-  let displayTitle = title ? t(title) : unsafe_title
+export const HeadTitle = ({ title, unsafe_title }: HeadTitleProps) => {
+  const { t } = useLang()
+  const displayTitle = title ? t(title) : unsafe_title
 
   useEffect(() => {
     if (displayTitle) {

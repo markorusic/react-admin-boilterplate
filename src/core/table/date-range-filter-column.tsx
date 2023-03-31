@@ -10,21 +10,21 @@ type Props = RangePickerProps<dayjs.Dayjs> & {
 }
 
 function DateRangeTableFilter({ name, ...props }: Props) {
-  let table = useTableContext()
+  const table = useTableContext()
 
-  let minFieldName = `${name}_gte`
-  let maxFieldName = `${name}_lte`
-  let min = table.queryParams[minFieldName] as string
-  let max = table.queryParams[maxFieldName] as string
+  const minFieldName = `${name}_gte`
+  const maxFieldName = `${name}_lte`
+  const min = table.queryParams[minFieldName] as string
+  const max = table.queryParams[maxFieldName] as string
 
   function setValues(values: (Dayjs | null)[]) {
-    let minValue = values[0]?.format()
-    let maxValue = values[1]?.format()
+    const minValue = values[0]?.format()
+    const maxValue = values[1]?.format()
 
     table.setQueryParams((params: any) => ({
       ...params,
       [minFieldName]: minValue,
-      [maxFieldName]: maxValue
+      [maxFieldName]: maxValue,
     }))
   }
 
@@ -33,7 +33,7 @@ function DateRangeTableFilter({ name, ...props }: Props) {
       <DatePicker.RangePicker
         {...props}
         value={min && max ? [dayjs(min), dayjs(max)] : undefined}
-        onChange={values => {
+        onChange={(values) => {
           values ? setValues(values) : setValues([])
         }}
       />
@@ -43,15 +43,15 @@ function DateRangeTableFilter({ name, ...props }: Props) {
 
 export function dateRangeFilterColumn<T = any>(
   column: TableColumn<T>,
-  options?: RangePickerProps<dayjs.Dayjs>
+  options?: RangePickerProps<dayjs.Dayjs>,
 ): TableColumn<T> {
   return {
     ...column,
     filterDropdown: () => (
       <DateRangeTableFilter {...options} name={column.name} />
     ),
-    filterIcon: filtered => (
+    filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-    )
+    ),
   }
 }

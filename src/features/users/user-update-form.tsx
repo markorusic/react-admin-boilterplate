@@ -4,13 +4,13 @@ import {
   FormProps,
   RadioInput,
   SubmitButton,
-  TextInput
+  TextInput,
 } from '@/core/form'
 import { UserMutationRequest, UserStatus } from './user-types'
 
 export type UserUpdateFormProps = FormProps<UserMutationRequest>
 
-export let UserUpdateForm = (props: UserUpdateFormProps) => {
+export const UserUpdateForm = (props: UserUpdateFormProps) => {
   return (
     <Form {...props} zValidationSchema={UserMutationRequest}>
       <TextInput name="name" label="common.name" />
@@ -18,17 +18,17 @@ export let UserUpdateForm = (props: UserUpdateFormProps) => {
       <RadioInput
         name="role"
         label="common.role"
-        options={Object.values(UserRole).map(value => ({
+        options={Object.values(UserRole).map((value) => ({
           value,
-          title: value
+          title: value,
         }))}
       />
       <RadioInput
         name="status"
         label="common.status"
-        options={Object.values(UserStatus).map(value => ({
+        options={Object.values(UserStatus).map((value) => ({
           value,
-          title: value
+          title: value,
         }))}
       />
       <SubmitButton />

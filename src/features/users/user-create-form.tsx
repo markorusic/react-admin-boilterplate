@@ -4,13 +4,13 @@ import {
   Form,
   RadioInput,
   SubmitButton,
-  TextInput
+  TextInput,
 } from '@/core/form'
 import { UserMutationRequest, UserStatus } from './user-types'
 
 export type UserCreateFormProps = CreateFormProps<UserMutationRequest>
 
-export let UserCreateForm = (props: UserCreateFormProps) => {
+export const UserCreateForm = (props: UserCreateFormProps) => {
   return (
     <Form
       {...props}
@@ -19,7 +19,7 @@ export let UserCreateForm = (props: UserCreateFormProps) => {
         name: '',
         email: '',
         role: UserRole.admin,
-        status: UserStatus.active
+        status: UserStatus.active,
       }}
     >
       <TextInput name="name" label="common.name" />
@@ -27,17 +27,17 @@ export let UserCreateForm = (props: UserCreateFormProps) => {
       <RadioInput
         name="role"
         label="common.role"
-        options={Object.values(UserRole).map(value => ({
+        options={Object.values(UserRole).map((value) => ({
           value,
-          title: value
+          title: value,
         }))}
       />
       <RadioInput
         name="status"
         label="common.status"
-        options={Object.values(UserStatus).map(value => ({
+        options={Object.values(UserStatus).map((value) => ({
           value,
-          title: value
+          title: value,
         }))}
       />
       <SubmitButton />

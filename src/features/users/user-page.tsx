@@ -4,15 +4,15 @@ import { UserTable } from './user-table'
 import { UserUpdateForm } from './user-update-form'
 import { userService } from './user-service'
 
-export let UserPage = () => {
+export const UserPage = () => {
   return (
     <Crud
       name="user-crud"
       entityService={userService}
       initialFetchParams={{ sortBy: 'createdAt,desc' }}
-      renderTable={props => <UserTable {...props} />}
-      renderCreateForm={props => <UserCreateForm {...props} />}
-      renderUpdateForm={props => (
+      renderTable={(props) => <UserTable {...props} />}
+      renderCreateForm={(props) => <UserCreateForm {...props} />}
+      renderUpdateForm={(props) => (
         <UserUpdateForm {...props} initialValues={props.activeRecord} />
       )}
     />

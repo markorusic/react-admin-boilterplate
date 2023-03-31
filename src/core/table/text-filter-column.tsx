@@ -6,8 +6,8 @@ import { useLang } from '../localization'
 import { TableColumn } from './table'
 
 function TextTableFilter(props: FilterDropdownProps) {
-  let { t } = useLang()
-  let searchInputRef = useRef<Input>(null)
+  const { t } = useLang()
+  const searchInputRef = useRef<Input>(null)
 
   useEffect(() => {
     if (props.visible) {
@@ -25,7 +25,7 @@ function TextTableFilter(props: FilterDropdownProps) {
         placeholder={t('common.searchTerm')}
         value={props.selectedKeys[0]}
         onPressEnter={() => props.confirm()}
-        onChange={event => {
+        onChange={(event) => {
           props.setSelectedKeys(event.target.value ? [event.target.value] : [])
         }}
       />
@@ -56,13 +56,13 @@ function TextTableFilter(props: FilterDropdownProps) {
 }
 
 export function textFilterColumn<T = any>(
-  column: TableColumn<T>
+  column: TableColumn<T>,
 ): TableColumn<T> {
   return {
     ...column,
-    filterDropdown: props => <TextTableFilter {...props} />,
-    filterIcon: filtered => (
+    filterDropdown: (props) => <TextTableFilter {...props} />,
+    filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-    )
+    ),
   }
 }

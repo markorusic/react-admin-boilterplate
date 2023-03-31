@@ -14,20 +14,20 @@ export function App() {
           path: '/',
           title: 'page.home',
           icon: <HomeOutlined />,
-          element: <div>{useLang().t('page.home')}</div>
+          element: <div>{useLang().t('page.home')}</div>,
         },
         {
           path: '/users',
           title: 'page.users',
           icon: <UserOutlined />,
-          element: <UserPage />
+          element: <UserPage />,
         },
         {
           path: '/settings',
           title: 'page.settings',
           icon: <SettingOutlined />,
-          element: <Settings />
-        }
+          element: <Settings />,
+        },
       ])}
     </Routes>
   )

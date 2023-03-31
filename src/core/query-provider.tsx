@@ -1,15 +1,15 @@
 import React, { FC } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-export let queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 10 * 1000,
-      retry: false
-    }
-  }
+      retry: false,
+    },
+  },
 })
 
-export let QueryProvider: FC = props => {
+export const QueryProvider: FC = (props) => {
   return <QueryClientProvider {...props} client={queryClient} />
 }

@@ -4,74 +4,76 @@ import { UserRole } from '@/core/auth'
 import {
   dateRangeFilterColumn,
   textFilterColumn,
-  PageableTableProps,
-  PageableTable,
-  TableColumn
+  PageabconstableProps,
+  Pageabconstable,
+  TableColumn,
 } from '../../core/table'
 import { formatDate } from '../../core/utils/date'
 import { UserRequest, UserResponse, UserStatus } from './user-types'
 
-export type UserTableProps = PageableTableProps<UserResponse, UserRequest>
+export type UserTableProps = PageabconstableProps<UserResponse, UserRequest>
 
-let userRoleColor: Record<UserRole, string> = {
+const userRoleColor: Record<UserRole, string> = {
   [UserRole.admin]: 'purple',
-  [UserRole.superAdmin]: 'blue'
+  [UserRole.superAdmin]: 'blue',
 }
 
-let userStatusColor: Record<UserStatus, string> = {
+const userStatusColor: Record<UserStatus, string> = {
   [UserStatus.active]: 'green',
-  [UserStatus.inactive]: 'red'
+  [UserStatus.inactive]: 'red',
 }
 
-export let userColumns: TableColumn<UserResponse>[] = [
+export const userColumns: TableColumn<UserResponse>[] = [
   textFilterColumn({
     name: 'id',
     title: 'common.id',
     sorter: true,
-    width: 100
+    width: 100,
   }),
   textFilterColumn({
     name: 'name',
     title: 'common.name',
-    sorter: true
+    sorter: true,
   }),
   textFilterColumn({
     name: 'email',
     title: 'common.email',
-    sorter: true
+    sorter: true,
   }),
   {
     name: 'role',
     title: 'common.role',
     sorter: true,
     filterMultiple: false,
-    filters: Object.values(UserRole).map(value => ({
+    filters: Object.values(UserRole).map((value) => ({
       value,
-      text: value
+      text: value,
     })),
-    render: (_, user) => <Tag color={userRoleColor[user.role]}>{user.role}</Tag>
+    render: (_, user) => (
+      <Tag color={userRoleColor[user.role]}>{user.role}</Tag>
+    ),
   },
   {
     name: 'status',
     title: 'common.status',
     sorter: true,
     filterMultiple: false,
-    filters: Object.values(UserStatus).map(value => ({
+    filters: Object.values(UserStatus).map((value) => ({
       value,
-      text: value
+      text: value,
     })),
     render: (_, user) => (
       <Tag color={userStatusColor[user.status]}>{user.status}</Tag>
-    )
+    ),
   },
   dateRangeFilterColumn({
     name: 'createdAt',
     title: 'common.createdAt',
     sorter: true,
-    render: formatDate
-  })
+    render: formatDate,
+  }),
 ]
 
-export let UserTable = (props: UserTableProps) => {
-  return <PageableTable {...props} columns={userColumns} />
+export const UserTable = (props: UserTableProps) => {
+  return <Pageabconstable {...props} columns={userColumns} />
 }

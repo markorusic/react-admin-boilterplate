@@ -17,7 +17,7 @@ export type TableProps<T> = Omit<BaseTableProps<T>, 'columns'> & {
 }
 
 export function Table<T>({ columns = [], loading, ...props }: TableProps<T>) {
-  let { t } = useLang()
+  const { t } = useLang()
   return (
     <BaseTable
       // @ts-ignore
@@ -28,11 +28,11 @@ export function Table<T>({ columns = [], loading, ...props }: TableProps<T>) {
         ...column,
         title: column.title ? t(column.title) : column.unsafe_title,
         dataIndex: name,
-        key: name
+        key: name,
       }))}
       loading={{
         spinning: !!loading,
-        indicator: <Spin />
+        indicator: <Spin />,
       }}
     />
   )

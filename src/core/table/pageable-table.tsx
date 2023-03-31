@@ -6,13 +6,13 @@ import { useLang } from '../localization'
 import {
   tableOnChangeAdapter,
   paginationAdapter,
-  pageableTableColumnsAdapter
+  pageabconstableColumnsAdapter,
 } from './table-adapters'
 import { Table, TableProps } from './table'
 
 export type UsePageableTableOptions<
   PageItem,
-  FetchParams extends PageRequest
+  FetchParams extends PageRequest,
 > = {
   name: string
   queryFn(params: FetchParams): Promise<Page<PageItem>>
@@ -20,38 +20,38 @@ export type UsePageableTableOptions<
   enabled?: boolean
 }
 
-export type PageableTableProps<
+export type PageabconstableProps<
   PageItem,
-  FetchParams extends PageRequest
+  FetchParams extends PageRequest,
 > = TableProps<PageItem> & {
   query: UseQueryResult<Page<PageItem>>
   queryParams: FetchParams
   setQueryParams: React.Dispatch<React.SetStateAction<FetchParams>>
 }
 
-export let usePageableTable = <PageItem, FetchParams extends PageRequest>({
+export const usePageableTable = <PageItem, FetchParams extends PageRequest>({
   enabled = true,
   ...props
-}: UsePageableTableOptions<PageItem, FetchParams>): PageableTableProps<
+}: UsePageableTableOptions<PageItem, FetchParams>): PageabconstableProps<
   PageItem,
   FetchParams
 > => {
-  let { t } = useLang()
+  const { t } = useLang()
   // @ts-ignore
-  let [queryParams, setQueryParams] = useState<FetchParams>({
+  const [queryParams, setQueryParams] = useState<FetchParams>({
     page: 0,
     size: 10,
-    ...props.initialQueryParams
+    ...props.initialQueryParams,
   })
 
-  let pageDataQuery = useQuery({
+  const pageDataQuery = useQuery({
     queryKey: [props.name, '_table', Object.values(queryParams)],
     queryFn: () => props.queryFn(queryParams),
     keepPreviousData: true,
     enabled,
     onError: () => {
       notification.error({ message: t('error.unknown') })
-    }
+    },
   })
 
   return {
@@ -59,36 +59,39 @@ export let usePageableTable = <PageItem, FetchParams extends PageRequest>({
     setQueryParams,
     query: pageDataQuery,
     dataSource: pageDataQuery.data?.content ?? [],
-    onChange: tableOnChangeAdapter(updatedParams => {
-      setQueryParams(currentParams => ({
+    onChange: tableOnChangeAdapter((updatedParams) => {
+      setQueryParams((currentParams) => ({
         ...currentParams,
-        ...updatedParams
+        ...updatedParams,
       }))
     }),
     pagination: {
       ...paginationAdapter({
         pageSize: queryParams.size,
         current: queryParams.page,
-        total: pageDataQuery.data?.total
-      })
-    }
+        total: pageDataQuery.data?.total,
+      }),
+    },
   }
 }
 
-let PageableTableContext = createContext<unknown>(null)
+const PageabconstableContext = createContext<unknown>(null)
 export function useTableContext<T = any, K = any>() {
-  return useContext(PageableTableContext) as PageableTableProps<T, K>
+  return useContext(PageabconstableContext) as PageabconstableProps<T, K>
 }
 
-export function PageableTable<T, K extends PageRequest>(
-  props: PageableTableProps<T, K>
+export function Pageabconstable<T, K extends PageRequest>(
+  props: PageabconstableProps<T, K>,
 ) {
   return (
-    <PageableTableContext.Provider value={props}>
+    <PageabconstableContext.Provider value={props}>
       <Table
         {...props}
-        columns={pageableTableColumnsAdapter(props.queryParams, props.columns)}
+        columns={pageabconstableColumnsAdapter(
+          props.queryParams,
+          props.columns,
+        )}
       />
-    </PageableTableContext.Provider>
+    </PageabconstableContext.Provider>
   )
 }

@@ -12,9 +12,9 @@ class ValidationError extends Error {
 
 function createValidationError(e: z.ZodError) {
   const error = new ValidationError(e.message)
-  error.inner = e.errors.map(err => ({
+  error.inner = e.errors.map((err) => ({
     message: err.message,
-    path: err.path.join('.')
+    path: err.path.join('.'),
   }))
   return error
 }
@@ -29,6 +29,6 @@ export function validationSchemaAdapter<T>(schema: z.ZodSchema<T>): {
       } catch (err: unknown) {
         throw createValidationError(err as z.ZodError<T>)
       }
-    }
+    },
   }
 }

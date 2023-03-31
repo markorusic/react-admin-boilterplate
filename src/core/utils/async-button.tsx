@@ -7,15 +7,15 @@ export interface AsyncButtonProps extends ButtonProps {
   asyncFn: () => Promise<any>
 }
 
-export let AsyncButton: FC<AsyncButtonProps> = ({ asyncFn, ...props }) => {
-  let [state, fn] = useAsyncFn(asyncFn)
+export const AsyncButton: FC<AsyncButtonProps> = ({ asyncFn, ...props }) => {
+  const [state, fn] = useAsyncFn(asyncFn)
 
   useEffect(() => {
     if (state.error) {
       notification.open({
         type: 'error',
         message:
-          state.error?.response?.data?.message ?? useLang().t('error.unknown')
+          state.error?.response?.data?.message ?? useLang().t('error.unknown'),
       })
     }
   }, [state.error])

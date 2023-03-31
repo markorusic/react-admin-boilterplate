@@ -4,7 +4,7 @@ import { PlusCircleOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useQuery, UseQueryResult } from 'react-query'
 import { Modal, ButtonModal } from '../utils/modal'
 import { ID, Identifiable, PageRequest } from '../types'
-import { usePageableTable, PageableTableProps } from '../table'
+import { usePageableTable, PageabconstableProps } from '../table'
 import { Spin } from '../utils/spin'
 import { CrudProps } from './types'
 import { CrudMessages } from '.'
@@ -15,11 +15,11 @@ export function Crud<
   ItemDto,
   CreateDto,
   UpdateDto = CreateDto & Identifiable,
-  FetchPageParams extends PageRequest = PageRequest
+  FetchPageParams extends PageRequest = PageRequest,
 >(
-  props: CrudProps<PageItemDto, ItemDto, CreateDto, UpdateDto, FetchPageParams>
+  props: CrudProps<PageItemDto, ItemDto, CreateDto, UpdateDto, FetchPageParams>,
 ) {
-  let crud = useCrud(props)
+  const crud = useCrud(props)
   return (
     <CrudTableContext.Provider value={crud.table}>
       <CrudActiveRecordContext.Provider value={crud.activeRecordQuery}>
@@ -33,10 +33,10 @@ export function Crud<
   )
 }
 
-let nullRender = () => null
-let defaultMessages: CrudMessages = {
+const nullRender = () => null
+const defaultMessages: CrudMessages = {
   createTitle: 'common.create',
-  updateTitle: 'common.update'
+  updateTitle: 'common.update',
 }
 
 export function useCrud<
@@ -44,7 +44,7 @@ export function useCrud<
   ItemDto,
   CreateDto,
   UpdateDto = CreateDto & Identifiable,
-  FetchPageParams extends PageRequest = PageRequest
+  FetchPageParams extends PageRequest = PageRequest,
 >({
   name,
   entityService,
@@ -54,27 +54,27 @@ export function useCrud<
   accessRoles = {},
   renderCreateForm = nullRender,
   renderUpdateForm = nullRender,
-  renderHeader = nullRender
+  renderHeader = nullRender,
 }: CrudProps<PageItemDto, ItemDto, CreateDto, UpdateDto, FetchPageParams>) {
-  let { user } = useAuth()
-  let table = usePageableTable({
+  const { user } = useAuth()
+  const table = usePageableTable({
     name: name,
     initialQueryParams: initialFetchParams,
-    queryFn: entityService.fetchPage
+    queryFn: entityService.fetchPage,
   })
 
-  let [activeRecordId, setActiveRecordId] = useState<ID>()
-  let activeRecordQuery = useQuery({
+  const [activeRecordId, setActiveRecordId] = useState<ID>()
+  const activeRecordQuery = useQuery({
     keepPreviousData: true,
     enabled: activeRecordId !== undefined,
     queryKey: [name, 'active-record', activeRecordId],
-    queryFn: () => entityService.fetchById(activeRecordId as ID)
+    queryFn: () => entityService.fetchById(activeRecordId as ID),
   })
 
-  let enableCreate =
+  const enableCreate =
     renderCreateForm !== nullRender && checkAccess(user, accessRoles.createRole)
 
-  let enableUpdate =
+  const enableUpdate =
     renderUpdateForm !== nullRender && checkAccess(user, accessRoles.updateRole)
 
   return {
@@ -89,16 +89,16 @@ export function useCrud<
     renderCreateForm,
     renderUpdateForm,
     renderHeader,
-    renderTable
+    renderTable,
   }
 }
 
-let CrudTableContext = createContext<unknown>(null)
+const CrudTableContext = createContext<unknown>(null)
 export function useCrudTable<T, K>() {
-  return useContext(CrudTableContext) as PageableTableProps<T, K>
+  return useContext(CrudTableContext) as PageabconstableProps<T, K>
 }
 
-let CrudActiveRecordContext = createContext<unknown>(null)
+const CrudActiveRecordContext = createContext<unknown>(null)
 export function useCrudActiveRecord<T>() {
   return useContext(CrudActiveRecordContext) as UseQueryResult<T>
 }
@@ -110,7 +110,7 @@ export function CrudSplitLayout(props: ReturnType<typeof useCrud>) {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginBottom: 8
+          marginBottom: 8,
         }}
       >
         <div style={{ display: 'flex', flex: 1 }}>
@@ -119,18 +119,18 @@ export function CrudSplitLayout(props: ReturnType<typeof useCrud>) {
               title={props.messages.createTitle ?? defaultMessages.createTitle}
               buttonProps={{
                 type: 'primary',
-                icon: <PlusCircleOutlined />
+                icon: <PlusCircleOutlined />,
               }}
               modalProps={{ width: 900, destroyOnClose: true }}
             >
-              {modal =>
+              {(modal) =>
                 props.renderCreateForm({
                   successMessage: 'common.successfullyExecuted',
                   async onSubmit(values) {
                     await props.entityService.create(values)
                     props.table.query.refetch()
                     modal.close()
-                  }
+                  },
                 })
               }
             </ButtonModal>
@@ -157,13 +157,13 @@ export function CrudSplitLayout(props: ReturnType<typeof useCrud>) {
             ...(props.enableUpdate
               ? {
                   rowClassName: 'clickable',
-                  onRow: record => ({
+                  onRow: (record) => ({
                     onClick() {
                       props.setActiveRecordId(record.id)
-                    }
-                  })
+                    },
+                  }),
                 }
-              : {})
+              : {}),
           })}
         </div>
 
@@ -175,7 +175,7 @@ export function CrudSplitLayout(props: ReturnType<typeof useCrud>) {
                 flex: 35,
                 padding: 16,
                 border: '1px solid #F0F2F5',
-                borderRadius: 4
+                borderRadius: 4,
               }}
             >
               {props.activeRecordQuery.data ? (
@@ -186,7 +186,7 @@ export function CrudSplitLayout(props: ReturnType<typeof useCrud>) {
                     await props.entityService.update(values)
                     props.activeRecordQuery.refetch()
                     props.table.query.refetch()
-                  }
+                  },
                 })
               ) : (
                 <Spin delay={200} spinning />
@@ -206,7 +206,7 @@ export function CrudModalLayout(props: ReturnType<typeof useCrud>) {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginBottom: 8
+          marginBottom: 8,
         }}
       >
         <div style={{ display: 'flex', flex: 1 }}>
@@ -215,18 +215,18 @@ export function CrudModalLayout(props: ReturnType<typeof useCrud>) {
               title={props.messages.createTitle ?? defaultMessages.createTitle}
               buttonProps={{
                 type: 'primary',
-                icon: <PlusCircleOutlined />
+                icon: <PlusCircleOutlined />,
               }}
               modalProps={{ width: 900, destroyOnClose: true }}
             >
-              {modal =>
+              {(modal) =>
                 props.renderCreateForm({
                   successMessage: 'common.successfullyExecuted',
                   async onSubmit(values) {
                     await props.entityService.create(values)
                     props.table.query.refetch()
                     modal.close()
-                  }
+                  },
                 })
               }
             </ButtonModal>
@@ -252,13 +252,13 @@ export function CrudModalLayout(props: ReturnType<typeof useCrud>) {
           ...(props.enableUpdate
             ? {
                 rowClassName: 'clickable',
-                onRow: record => ({
+                onRow: (record) => ({
                   onClick() {
                     props.setActiveRecordId(record.id)
-                  }
-                })
+                  },
+                }),
               }
-            : {})
+            : {}),
         })}
       </div>
 
@@ -276,7 +276,7 @@ export function CrudModalLayout(props: ReturnType<typeof useCrud>) {
                 await props.entityService.update(values)
                 props.activeRecordQuery.refetch()
                 props.table.query.refetch()
-              }
+              },
             })
           ) : (
             <Spin spinning />

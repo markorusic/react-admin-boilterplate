@@ -10,11 +10,13 @@ import { App } from './app'
 import 'antd/dist/antd.min.css'
 import './index.css'
 
-if (!env.apiBaseUrl) {
-  let module = import.meta.globEager('./mocks/browser.ts')['./mocks/browser.ts']
-  let { worker } = module
-  worker.start()
-}
+// if (!env.apiBaseUrl) {
+// const module = import.meta.glob('./mocks/browser.ts', {eager: true})[
+//   './mocks/browser.ts'
+// ]
+// const { worker } = module
+// worker.start()
+// }
 
 ReactDOM.render(
   <BrowserRouter>
@@ -26,5 +28,5 @@ ReactDOM.render(
       </LangProvider>
     </QueryProvider>
   </BrowserRouter>,
-  document.getElementById('root')
+  document.getElementById('root'),
 )

@@ -12,22 +12,24 @@ type GalleryInputProps = UploadProps &
   }
 
 export const GalleryInput = ({ uploadFn, ...props }: GalleryInputProps) => {
-  let { t } = useLang()
+  const { t } = useLang()
   const [field, , helpers] = useField<string[]>(props.name)
   const [loading, setLoading] = useState(false)
   return (
     <FormInputContainer {...props}>
       <Upload
         listType="picture-card"
-        onRemove={removed => {
-          const filteredPaths = field.value.filter(path => removed.url !== path)
+        onRemove={(removed) => {
+          const filteredPaths = field.value.filter(
+            (path) => removed.url !== path,
+          )
           helpers.setValue(filteredPaths)
         }}
         fileList={field.value.map((url, index) => ({
           url,
           uid: url + index,
           name: `Photo ${index}`,
-          status: 'done'
+          status: 'done',
         }))}
         customRequest={async ({ file }) => {
           try {
@@ -37,7 +39,7 @@ export const GalleryInput = ({ uploadFn, ...props }: GalleryInputProps) => {
             notification.success({ message: t('common.uploadSuccess') })
           } catch (err: any) {
             notification.error({
-              message: err?.response?.data?.message ?? t('common.uploadError')
+              message: err?.response?.data?.message ?? t('common.uploadError'),
             })
           } finally {
             setLoading(false)

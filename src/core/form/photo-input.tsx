@@ -14,9 +14,9 @@ type PhotoInputProps = UploadProps &
   }
 
 export function PhotoInput({ uploadFn, ...props }: PhotoInputProps) {
-  let { t } = useLang()
-  let [field, , helpers] = useField<string>(props.name)
-  let [loading, setLoading] = useState(false)
+  const { t } = useLang()
+  const [field, , helpers] = useField<string>(props.name)
+  const [loading, setLoading] = useState(false)
   return (
     <FormInputContainer {...props}>
       <Upload
@@ -25,12 +25,12 @@ export function PhotoInput({ uploadFn, ...props }: PhotoInputProps) {
         customRequest={async ({ file }) => {
           try {
             setLoading(true)
-            let path = await uploadFn(file)
+            const path = await uploadFn(file)
             helpers.setValue(path)
             notification.success({ message: t('common.uploadSuccess') })
           } catch (err: any) {
             notification.error({
-              message: err?.response?.data?.message ?? t('common.uploadError')
+              message: err?.response?.data?.message ?? t('common.uploadError'),
             })
           } finally {
             setLoading(false)
@@ -47,7 +47,7 @@ export function PhotoInput({ uploadFn, ...props }: PhotoInputProps) {
                 width: '100%',
                 height: 'auto',
                 overflow: 'hidden',
-                objectFit: 'contain'
+                objectFit: 'contain',
               }}
             />
           </div>

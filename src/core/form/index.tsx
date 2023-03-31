@@ -4,7 +4,7 @@ import React, {
   FC,
   ReactElement,
   ReactNode,
-  useEffect
+  useEffect,
 } from 'react'
 import dayjs from 'dayjs'
 import {
@@ -13,7 +13,7 @@ import {
   FormikConfig,
   Formik,
   Form as FormikFrom,
-  FormikProps
+  FormikProps,
 } from 'formik'
 import {
   Button,
@@ -25,7 +25,7 @@ import {
   Radio,
   notification,
   SwitchProps,
-  Switch
+  Switch,
 } from 'antd'
 import { TextAreaProps as BaseTextAreaProps } from 'antd/lib/input'
 import { SaveOutlined } from '@ant-design/icons'
@@ -48,14 +48,14 @@ export type CreateFormProps<T = any> = Omit<FormProps<T>, 'initialValues'> & {
   initialValues?: T
 }
 
-export let withForm = <Props, FormValues>(
+export const withForm = <Props, FormValues>(
   mapProps: (componentProps: Props) => FormProps<FormValues>,
-  Component: ComponentType<FormikProps<FormValues>>
+  Component: ComponentType<FormikProps<FormValues>>,
 ) => {
   return function InnerComponent(componentProps: Props) {
     return (
       <Form {...mapProps(componentProps)}>
-        {formik => <Component {...formik} />}
+        {(formik) => <Component {...formik} />}
       </Form>
     )
   }
@@ -69,8 +69,8 @@ export function Form<T>({
   closeModalOnSubmit = true,
   ...props
 }: FormProps<T>) {
-  let { t } = useLang()
-  let modal = useModal()
+  const { t } = useLang()
+  const modal = useModal()
 
   return (
     <Formik
@@ -104,9 +104,9 @@ export function Form<T>({
   )
 }
 
-let FormUI: FC = ({ children }) => {
-  let formik = useFormikContext()
-  let modal = useModal()
+const FormUI: FC = ({ children }) => {
+  const formik = useFormikContext()
+  const modal = useModal()
 
   useEffect(() => {
     if (formik.dirty) {
@@ -118,7 +118,7 @@ let FormUI: FC = ({ children }) => {
 
   return (
     <FormikFrom
-      onSubmit={event => {
+      onSubmit={(event) => {
         event.preventDefault()
         event.stopPropagation()
         if (!formik.isSubmitting) {
@@ -138,20 +138,20 @@ export type BaseInputProps = {
   errorPosition?: 'top' | 'bottom'
 }
 
-export let FormInputContainer: FC<BaseInputProps> = ({
+export const FormInputContainer: FC<BaseInputProps> = ({
   name,
   label,
   unsafe_label = '',
   errorPosition = 'bottom',
-  children
+  children,
 }) => {
-  let { t } = useLang()
-  let [, meta] = useField(name)
+  const { t } = useLang()
+  const [, meta] = useField(name)
 
-  let id = `${name}`
-  let displayLabel = label ? t(label) : unsafe_label
+  const id = `${name}`
+  const displayLabel = label ? t(label) : unsafe_label
 
-  let errorElement =
+  const errorElement =
     meta.touched && meta.error ? (
       <div>
         <span style={{ color: 'red' }}>{t(meta.error as TranslationKeys)}</span>
@@ -172,8 +172,8 @@ export let FormInputContainer: FC<BaseInputProps> = ({
   )
 }
 
-export let SubmitButton: FC<ButtonProps> = props => {
-  let form = useFormikContext()
+export const SubmitButton: FC<ButtonProps> = (props) => {
+  const form = useFormikContext()
   return (
     <div style={{ padding: '8px 0' }}>
       <Button
@@ -191,8 +191,8 @@ export let SubmitButton: FC<ButtonProps> = props => {
 }
 
 export type TextInputProps = BaseInputProps & InputProps
-export let TextInput: FC<TextInputProps> = props => {
-  let [field] = useField(props.name)
+export const TextInput: FC<TextInputProps> = (props) => {
+  const [field] = useField(props.name)
   return (
     <FormInputContainer {...props}>
       <Input {...field} {...props} />
@@ -201,8 +201,8 @@ export let TextInput: FC<TextInputProps> = props => {
 }
 
 export type TextAreaProps = BaseInputProps & BaseTextAreaProps
-export let TextAreaInput: FC<TextAreaProps> = props => {
-  let [field] = useField(props.name)
+export const TextAreaInput: FC<TextAreaProps> = (props) => {
+  const [field] = useField(props.name)
   return (
     <FormInputContainer {...props}>
       <Input.TextArea {...field} {...props} />
@@ -211,22 +211,22 @@ export let TextAreaInput: FC<TextAreaProps> = props => {
 }
 
 export type NumberInputProps = BaseInputProps & InputNumberProps
-export let NumberInput: FC<NumberInputProps> = props => {
-  let [field, , helpers] = useField(props.name)
+export const NumberInput: FC<NumberInputProps> = (props) => {
+  const [field, , helpers] = useField(props.name)
   return (
     <FormInputContainer {...props}>
       <InputNumber
         {...field}
         {...props}
-        onChange={value => helpers.setValue(value)}
+        onChange={(value) => helpers.setValue(value)}
       />
     </FormInputContainer>
   )
 }
 
 export type DateInputProps = BaseInputProps & DatePickerProps
-export let DateInput: React.FC<DateInputProps> = props => {
-  let [field, , helpers] = useField(props.name)
+export const DateInput: React.FC<DateInputProps> = (props) => {
+  const [field, , helpers] = useField(props.name)
   return (
     <FormInputContainer {...props}>
       <DatePicker
@@ -235,7 +235,7 @@ export let DateInput: React.FC<DateInputProps> = props => {
         {...props}
         {...field}
         value={dayjs(field.value)}
-        onChange={value => helpers.setValue(value?.toString())}
+        onChange={(value) => helpers.setValue(value?.toString())}
       />
     </FormInputContainer>
   )
@@ -244,12 +244,12 @@ export let DateInput: React.FC<DateInputProps> = props => {
 export type RadioInputProps = BaseInputProps & {
   options: { title: ReactNode; value: any }[]
 }
-export let RadioInput: FC<RadioInputProps> = ({ options, ...props }) => {
-  let [field] = useField(props.name)
+export const RadioInput: FC<RadioInputProps> = ({ options, ...props }) => {
+  const [field] = useField(props.name)
   return (
     <FormInputContainer {...props}>
       <Radio.Group {...field}>
-        {options.map(option => (
+        {options.map((option) => (
           <Radio key={option.value} value={option.value}>
             {option.title}
           </Radio>
@@ -260,14 +260,14 @@ export let RadioInput: FC<RadioInputProps> = ({ options, ...props }) => {
 }
 
 export type SwitchInputProps = BaseInputProps & SwitchProps
-export let SwitchInput: FC<SwitchInputProps> = props => {
-  let [field, , helpers] = useField(props.name)
+export const SwitchInput: FC<SwitchInputProps> = (props) => {
+  const [field, , helpers] = useField(props.name)
   return (
     <FormInputContainer {...props}>
       <Switch
         {...props}
         checked={field.value}
-        onChange={value => helpers.setValue(value)}
+        onChange={(value) => helpers.setValue(value)}
       />
     </FormInputContainer>
   )
@@ -275,9 +275,11 @@ export let SwitchInput: FC<SwitchInputProps> = props => {
 
 export type TableInputProps<T extends Identifiable> = BaseInputProps &
   TableProps<T>
-export let TableInput = <T extends Identifiable>(props: TableInputProps<T>) => {
-  let [field, , helpers] = useField<ID[] | undefined>(props.name)
-  let value = field.value ?? []
+export const TableInput = <T extends Identifiable>(
+  props: TableInputProps<T>,
+) => {
+  const [field, , helpers] = useField<ID[] | undefined>(props.name)
+  const value = field.value ?? []
 
   return (
     <FormInputContainer errorPosition="top" {...props}>
@@ -290,9 +292,9 @@ export let TableInput = <T extends Identifiable>(props: TableInputProps<T>) => {
             helpers.setValue(
               selected
                 ? value.concat(item.id)
-                : value.filter(id => id !== item.id)
+                : value.filter((id) => id !== item.id),
             )
-          }
+          },
         }}
       />
     </FormInputContainer>

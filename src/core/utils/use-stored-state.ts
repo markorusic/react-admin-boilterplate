@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 
-export let useStoredState = <T>(
+export const useStoredState = <T>(
   key: string,
-  defaultValue: T
+  defaultValue: T,
 ): [T, React.Dispatch<React.SetStateAction<T>>] => {
-  let [value, setValue] = useState(() => {
+  const [value, setValue] = useState(() => {
     try {
-      let rawValue = localStorage.getItem(key)
+      const rawValue = localStorage.getItem(key)
       if (rawValue) {
-        let parsedValue = JSON.parse(rawValue) as T
+        const parsedValue = JSON.parse(rawValue) as T
         return parsedValue || defaultValue
       }
     } catch (error) {}

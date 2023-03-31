@@ -28,7 +28,7 @@ export enum ComparisonOperator {
   gt = 'gt',
   lt = 'lt',
   gte = 'gte',
-  lte = 'lte'
+  lte = 'lte',
 }
 
 export type Comparable<T extends string = string> = {

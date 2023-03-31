@@ -13,24 +13,24 @@ type FeatureItemKey =
   | 'service'
   | 'table'
 
-let ALL_FEATURE_ITEM_KEYS: FeatureItemKey[] = [
+const ALL_FEATURE_ITEM_KEYS: FeatureItemKey[] = [
   'mswMock',
   'createForm',
   'updateForm',
   'page',
   'type',
   'service',
-  'table'
+  'table',
 ]
 
-let FEATURE_ITEM_NAMES: Record<FeatureItemKey, string> = {
+const FEATURE_ITEM_NAMES: Record<FeatureItemKey, string> = {
   type: 'TypeScript types file',
   service: 'API service file',
   table: 'Table component',
   createForm: 'Create form component',
   updateForm: 'Update form component',
   page: 'Page component',
-  mswMock: 'MSW API mocks'
+  mswMock: 'MSW API mocks',
 }
 
 function capitalize(word: string) {
@@ -41,7 +41,7 @@ function capitalize(word: string) {
 async function getPrettierOptions() {
   let prettierOptions: prettier.Options | undefined = undefined
   try {
-    let buffer = fs.readFileSync(join(__dirname, '../.prettierrc'))
+    const buffer = fs.readFileSync(join(__dirname, '../.prettierrc'))
     prettierOptions = JSON.parse(buffer.toString())
   } catch (error) {}
   return prettierOptions
@@ -60,18 +60,18 @@ type Template = Record<FeatureItemKey, string>
 
 function templateFactory({
   name,
-  prettierOptions
+  prettierOptions,
 }: TemplateFactoryOptions): Template {
-  let capitalizedName = capitalize(name)
+  const capitalizedName = capitalize(name)
 
   function format(value: string) {
     return prettier.format(value, {
       parser: 'babel-ts',
-      ...prettierOptions
+      ...prettierOptions,
     })
   }
 
-  let type = format(`
+  const type = format(`
         import { z } from 'zod'
         import { ID, Record, Sortable, RecordSearch } from '@/core/types'
         import { zMessage } from '@/core/validation'
@@ -88,7 +88,7 @@ function templateFactory({
           name: string
         }
 
-        export let ${capitalizedName}MutationRequest = z.object({
+        export const ${capitalizedName}MutationRequest = z.object({
           id: z.number().or(z.string()).optional(),
           name: z.string(zMessage.required),
         })
@@ -96,32 +96,32 @@ function templateFactory({
         export type ${capitalizedName}MutationRequest = z.infer<typeof ${capitalizedName}MutationRequest>
     `)
 
-  let service = format(`
+  const service = format(`
       import { http } from '@/core/http-client'
       import { Page, ID } from '@/core/types'
       import { ${capitalizedName}Request, ${capitalizedName}Response, ${capitalizedName}MutationRequest } from './${name}-types'
 
-      let fetchPage = async (params: ${capitalizedName}Request): Promise<Page<${capitalizedName}Response>> => {
-        let { data } = await http.get<Page<${capitalizedName}Response>>('/api/${name}s', { params })
+      const fetchPage = async (params: ${capitalizedName}Request): Promise<Page<${capitalizedName}Response>> => {
+        const { data } = await http.get<Page<${capitalizedName}Response>>('/api/${name}s', { params })
         return data
       }
 
-      let fetchById = async (id: ID): Promise<${capitalizedName}Response> => {
-        let { data } = await http.get<${capitalizedName}Response>(\`/api/${name}s/\${id}\`)
+      const fetchById = async (id: ID): Promise<${capitalizedName}Response> => {
+        const { data } = await http.get<${capitalizedName}Response>(\`/api/${name}s/\${id}\`)
         return data
       }
 
-      let create = async (data: ${capitalizedName}MutationRequest) => {
-        let res = await http.post('/api/${name}s', data)
+      const create = async (data: ${capitalizedName}MutationRequest) => {
+        const res = await http.post('/api/${name}s', data)
         return res.data
       }
 
-      let update = async (data: ${capitalizedName}MutationRequest) => {
-        let res = await http.put('/api/${name}s', data)
+      const update = async (data: ${capitalizedName}MutationRequest) => {
+        const res = await http.put('/api/${name}s', data)
         return res.data
       }
 
-      export let ${name}Service = {
+      export const ${name}Service = {
         create,
         update,
         fetchPage,
@@ -129,7 +129,7 @@ function templateFactory({
       }   
     `)
 
-  let createForm = format(`
+  const createForm = format(`
         import {
           CreateFormProps,
           Form,
@@ -140,7 +140,7 @@ function templateFactory({
         
         export type ${capitalizedName}CreateFormProps = CreateFormProps<${capitalizedName}MutationRequest>
         
-        export let ${capitalizedName}CreateForm = (props: ${capitalizedName}CreateFormProps) => {
+        export const ${capitalizedName}CreateForm = (props: ${capitalizedName}CreateFormProps) => {
           return (
             <Form
               {...props}
@@ -154,7 +154,7 @@ function templateFactory({
         }    
     `)
 
-  let updateForm = format(`
+  const updateForm = format(`
         import {
           Form,
           FormProps,
@@ -165,7 +165,7 @@ function templateFactory({
         
         export type ${capitalizedName}UpdateFormProps = FormProps<${capitalizedName}MutationRequest>
         
-        export let ${capitalizedName}UpdateForm = (props: ${capitalizedName}UpdateFormProps) => {
+        export const ${capitalizedName}UpdateForm = (props: ${capitalizedName}UpdateFormProps) => {
           return (
             <Form {...props} zValidationSchema={${capitalizedName}MutationRequest}>
               <TextInput name="name" label="common.name" />
@@ -175,7 +175,7 @@ function templateFactory({
         }    
     `)
 
-  let table = format(`
+  const table = format(`
       import {
         dateRangeFilterColumn,
         textFilterColumn,
@@ -188,7 +188,7 @@ function templateFactory({
       
       export type ${capitalizedName}TableProps = PageableTableProps<${capitalizedName}Response, ${capitalizedName}Request>
       
-      export let ${name}Columns: TableColumn<${capitalizedName}Response>[] = [
+      export const ${name}Columns: TableColumn<${capitalizedName}Response>[] = [
         textFilterColumn({
           name: 'id',
           title: 'common.id',
@@ -208,20 +208,20 @@ function templateFactory({
         })
       ]
       
-      export let ${capitalizedName}Table = (props: ${capitalizedName}TableProps) => {
+      export const ${capitalizedName}Table = (props: ${capitalizedName}TableProps) => {
         return <PageableTable {...props} columns={${name}Columns} />
       }
     
     `)
 
-  let page = format(`
+  const page = format(`
         import { Crud } from '@/core/crud'
         import { ${capitalizedName}CreateForm } from './${name}-create-form'
         import { ${capitalizedName}Table } from './${name}-table'
         import { ${capitalizedName}UpdateForm } from './${name}-update-form'
         import { ${name}Service } from './${name}-service'
 
-        export let ${capitalizedName}Page = () => {
+        export const ${capitalizedName}Page = () => {
           return (
             <Crud
               name="${name}-crud"
@@ -238,16 +238,16 @@ function templateFactory({
 
     `)
 
-  let mswMock = format(`
+  const mswMock = format(`
       import { rest } from 'msw'
       import { createPage } from '@/core/utils/create-page'
       import { ${capitalizedName}Response } from '@/features/${name}/${name}-types'
       
-      let ${name}DataFactory = () => {
-        let total = 100
-        let data: ${capitalizedName}Response[] = []
+      const ${name}DataFactory = () => {
+        const total = 100
+        const data: ${capitalizedName}Response[] = []
       
-        for (let id = 1; id < total + 1; id++) {
+        for (const id = 1; id < total + 1; id++) {
           data.push({
             id,
             name: \`${name} \${id}\`,
@@ -259,16 +259,16 @@ function templateFactory({
         return data
       }
       
-      let ${name}Data = ${name}DataFactory()
+      const ${name}Data = ${name}DataFactory()
       
-      export let ${name}Handlers = [
+      export const ${name}Handlers = [
         rest.get('/api/${name}s', (req, res, ctx) => {
-          let params = Object.fromEntries(req.url.searchParams)
+          const params = Object.fromEntries(req.url.searchParams)
           return res(ctx.json(createPage(${name}Data, params)))
         }),
         rest.get('/api/${name}s/:id', (req, res, ctx) => {
-          let { id } = req.params
-          let ${name} = ${name}Data.find(${name} => ${name}.id == id)
+          const { id } = req.params
+          const ${name} = ${name}Data.find(${name} => ${name}.id == id)
           if (!${name}) {
             return res(ctx.status(404))
           }
@@ -289,12 +289,12 @@ function templateFactory({
 async function getFeatureName() {
   let [, , name] = process.argv
   if (!name) {
-    let result = await inquirer.prompt<{ name: string }>([
+    const result = await inquirer.prompt<{ name: string }>([
       {
         type: 'input',
         name: 'name',
-        message: 'What is the name of your feature?'
-      }
+        message: 'What is the name of your feature?',
+      },
     ])
     name = result.name
   }
@@ -302,17 +302,17 @@ async function getFeatureName() {
 }
 
 async function getSelectedFeatureKeys() {
-  let result = await inquirer.prompt<{ features: FeatureItemKey[] }>([
+  const result = await inquirer.prompt<{ features: FeatureItemKey[] }>([
     {
       type: 'checkbox',
       name: 'features',
       message: 'Select items that you need',
-      choices: ALL_FEATURE_ITEM_KEYS.map(key => ({
+      choices: ALL_FEATURE_ITEM_KEYS.map((key) => ({
         name: FEATURE_ITEM_NAMES[key],
         value: key,
-        checked: true
-      }))
-    }
+        checked: true,
+      })),
+    },
   ])
 
   return result.features
@@ -320,12 +320,12 @@ async function getSelectedFeatureKeys() {
 
 async function main() {
   try {
-    let prettierOptions = await getPrettierOptions()
-    let name = await getFeatureName()
-    let selectedFeatureKeys = await getSelectedFeatureKeys()
+    const prettierOptions = await getPrettierOptions()
+    const name = await getFeatureName()
+    const selectedFeatureKeys = await getSelectedFeatureKeys()
 
-    let mockDir = join(__dirname, '../src/mocks/handlers')
-    let featureDir = join(__dirname, `../src/features/${name}`)
+    const mockDir = join(__dirname, '../src/mocks/handlers')
+    const featureDir = join(__dirname, `../src/features/${name}`)
 
     if (!fs.existsSync(featureDir)) {
       fs.mkdirSync(featureDir)
@@ -333,21 +333,21 @@ async function main() {
 
     type FeatureItemPaths = Record<FeatureItemKey, string>
 
-    let paths: FeatureItemPaths = {
+    const paths: FeatureItemPaths = {
       type: join(featureDir, `${name}-types.ts`),
       service: join(featureDir, `${name}-service.ts`),
       createForm: join(featureDir, `${name}-create-form.tsx`),
       updateForm: join(featureDir, `${name}-update-form.tsx`),
       table: join(featureDir, `${name}-table.tsx`),
       page: join(featureDir, `${name}-page.tsx`),
-      mswMock: join(mockDir, `${name}.mock.ts`)
+      mswMock: join(mockDir, `${name}.mock.ts`),
     }
 
-    let templates = templateFactory({ name, prettierOptions })
+    const templates = templateFactory({ name, prettierOptions })
 
-    selectedFeatureKeys.forEach(key => {
-      let path = paths[key]
-      let template = templates[key]
+    selectedFeatureKeys.forEach((key) => {
+      const path = paths[key]
+      const template = templates[key]
       createFile(path, template)
     })
   } catch (error) {

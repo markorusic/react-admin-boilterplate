@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { UserRole } from '../auth'
 import { CreateFormProps, FormProps } from '../form'
 import { TranslationKeys } from '../localization'
-import { PageableTableProps } from '../table'
+import { PageabconstableProps } from '../table'
 import { ID, Identifiable, Page, PageRequest } from '../types'
 
 export type CrudAccessRoles = {
@@ -20,7 +20,7 @@ export type EntityService<
   ItemDto,
   CreateDto,
   UpdateDto = CreateDto & Identifiable,
-  FetchPageParams extends PageRequest = PageRequest
+  FetchPageParams extends PageRequest = PageRequest,
 > = {
   fetchPage(params: FetchPageParams): Promise<Page<PageItemDto>>
   fetchById(id: ID): Promise<ItemDto>
@@ -38,7 +38,7 @@ export type CrudProps<
   ItemDto = unknown,
   CreateDto = unknown,
   UpdateDto = CreateDto & Identifiable,
-  FetchPageParams extends PageRequest = PageRequest
+  FetchPageParams extends PageRequest = PageRequest,
 > = {
   name: string
   entityService: EntityService<
@@ -53,11 +53,11 @@ export type CrudProps<
   accessRoles?: CrudAccessRoles
   initialFetchParams?: FetchPageParams
   renderTable(
-    props: PageableTableProps<PageItemDto, FetchPageParams>
+    props: PageabconstableProps<PageItemDto, FetchPageParams>,
   ): ReactNode
   renderCreateForm?(props: CreateFormProps<CreateDto>): ReactNode
   renderUpdateForm?(props: UpdateFormProps<UpdateDto, ItemDto>): ReactNode
   renderHeader?(
-    props: PageableTableProps<PageItemDto, FetchPageParams>
+    props: PageabconstableProps<PageItemDto, FetchPageParams>,
   ): ReactNode
 }

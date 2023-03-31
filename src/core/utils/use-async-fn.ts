@@ -12,13 +12,13 @@ type StateFromAsyncFn<T extends AsyncFn> = AsyncState<Promise<ReturnType<T>>>
 
 export type AsyncFnReturn<T extends AsyncFn = AsyncFn> = [
   StateFromAsyncFn<T>,
-  T
+  T,
 ]
 
 export function useAsyncFn<T extends AsyncFn>(
   fn: T,
   deps: DependencyList = [],
-  initialState = { loading: false }
+  initialState = { loading: false },
 ): AsyncFnReturn<T> {
   const [state, set] = useState<StateFromAsyncFn<T>>(initialState)
 
@@ -36,24 +36,24 @@ export function useAsyncFn<T extends AsyncFn>(
     const callId = ++lastCallId.current
 
     if (!state.loading) {
-      set(prevState => ({ ...prevState, loading: true }))
+      set((prevState) => ({ ...prevState, loading: true }))
     }
 
     return fn(...args).then(
-      value => {
+      (value) => {
         mountedRef.current &&
           callId === lastCallId.current &&
           set({ value, loading: false })
 
         return value
       },
-      error => {
+      (error) => {
         mountedRef.current &&
           callId === lastCallId.current &&
           set({ error, loading: false })
 
         return error
-      }
+      },
     ) as ReturnType<T>
   }, deps)
 

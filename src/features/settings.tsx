@@ -2,9 +2,9 @@ import { Button, Descriptions } from 'antd'
 import { useAuth } from '@/core/auth'
 import { useLang, LangSwitch } from '@/core/localization'
 
-export let Settings = () => {
-  let { t } = useLang()
-  let { user, logout } = useAuth()
+export const Settings = () => {
+  const { t } = useLang()
+  const { user, logout } = useAuth()
 
   return (
     <div>
